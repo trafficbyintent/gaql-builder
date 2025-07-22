@@ -60,6 +60,7 @@ Thumbs.db
 # Package manager files
 .npm
 .yarn-integrity
+.npmrc
 
 # Optional npm cache directory
 .npm

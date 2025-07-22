@@ -5,7 +5,7 @@ A TypeScript library for building Google Ads Query Language (GAQL) queries progr
 ## Installation
 
 ```bash
-npm install gaql-builder
+npm install @traffic.by.intent/gaql-builder
 ```
 
 ## Quick Start

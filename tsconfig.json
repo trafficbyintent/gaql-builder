@@ -38,6 +38,7 @@
     "node_modules",
     "dist",
     "tests",
-    "coverage"
+    "coverage",
+    "src/**/*.test.ts"
   ]
 }
