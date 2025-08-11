@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-01-11
+
+### Changed
+- **BREAKING**: Migrated from public NPM to private GitHub Packages
+- **BREAKING**: Changed package name from `@traffic.by.intent/gaql-builder` to `@txi-dev/gaql-builder`
+- **BREAKING**: Parameters now only accept `boolean` and `number` types (no strings) for security
+- Refactored `build()` method for better maintainability and reduced complexity
+- Improved error messages with standardized format: "Expected: X, Received: Y"
+
+### Added
+- Custom error types for better error handling:
+  - `ValidationError` for input validation failures
+  - `QueryBuildError` for query construction errors
+  - `SecurityError` for security violations
+  - `QueryLimitError` for size limit violations
+- Query size limits to prevent memory exhaustion attacks:
+  - Maximum 500 SELECT fields
+  - Maximum 100 WHERE conditions
+  - Maximum 50 parameters
+  - Maximum 1000 values in IN/CONTAINS clauses
+  - Maximum 100KB total query size
+- ReDoS (Regular Expression Denial of Service) protection for REGEXP_MATCH patterns
+- Support for custom date ranges in YYYY-MM-DD format in `whereDuring()`
+- Comprehensive GitHub Packages authentication guide (GITHUB_PACKAGES_AUTH.md)
+- Additional test suites for security, limits, ReDoS, and date ranges (137 total tests)
+- 100% test coverage across all files
+
+### Security
+- Fixed critical parameter injection vulnerability by restricting parameter types
+- Added validation for regex pattern complexity to prevent ReDoS attacks
+- Implemented query size limits to prevent memory exhaustion
+- Enhanced field name and resource name validation
+
+### Infrastructure
+- Updated GitHub Actions workflows for GitHub Packages publishing
+- Added permissions configuration for package access in CI/CD
+- Configured .npmrc for GitHub Packages registry
+
+## [0.2.0] - Previous Release
+
 ### Added
 - Added GROUP BY clause support for aggregation queries
 - Added support for aggregate functions (SUM, COUNT, AVG, MIN, MAX, COUNT_DISTINCT)

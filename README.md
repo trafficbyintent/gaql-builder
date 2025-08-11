@@ -2,16 +2,56 @@
 
 A TypeScript library for building Google Ads Query Language (GAQL) queries programmatically with type safety and intuitive method chaining.
 
+> **Note:** This is a private package hosted on GitHub Packages. Authentication is required for installation.
+
 ## Installation
 
+### Prerequisites
+
+1. **Create a GitHub Personal Access Token (PAT)**:
+   - Go to GitHub Settings → Developer settings → Personal access tokens
+   - Generate a new token with the `read:packages` scope
+   - Save the token securely
+
+2. **Configure NPM Authentication**:
+
+   **Option A: Using npm login**
+   ```bash
+   npm login --registry=https://npm.pkg.github.com --scope=@txi-dev
+   # Username: your-github-username
+   # Password: your-github-personal-access-token
+   # Email: your-email
+   ```
+
+   **Option B: Using .npmrc file**
+   
+   Create or update `~/.npmrc` (or `.npmrc` in your project root):
+   ```bash
+   @txi-dev:registry=https://npm.pkg.github.com/
+   //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
+   ```
+
+   **Option C: Using environment variable**
+   ```bash
+   export NPM_TOKEN=your-github-personal-access-token
+   ```
+   
+   Then add to your project's `.npmrc`:
+   ```bash
+   @txi-dev:registry=https://npm.pkg.github.com/
+   //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
+   ```
+
+### Install the Package
+
 ```bash
-npm install @traffic.by.intent/gaql-builder
+npm install @txi-dev/gaql-builder
 ```
 
 ## Quick Start
 
 ```typescript
-import { GaqlBuilder } from '@traffic.by.intent/gaql-builder';
+import { GaqlBuilder } from '@txi-dev/gaql-builder';
 
 const query = new GaqlBuilder()
   .select(['campaign.id', 'campaign.name', 'metrics.clicks'])
@@ -42,7 +82,7 @@ console.log(query);
 ### Creating a Query Builder
 
 ```typescript
-import { GaqlBuilder } from '@traffic.by.intent/gaql-builder';
+import { GaqlBuilder } from '@txi-dev/gaql-builder';
 
 const builder = new GaqlBuilder();
 ```
@@ -210,7 +250,7 @@ try {
 - Verify resource names match Google Ads API resources exactly
 
 **TypeScript type errors**
-- Import types explicitly: `import { GaqlBuilder, type GaqlValue } from '@traffic.by.intent/gaql-builder'`
+- Import types explicitly: `import { GaqlBuilder, type GaqlValue } from '@txi-dev/gaql-builder'`
 - Ensure TypeScript is configured with `strict: true` for best type safety
 
 **Invalid field names**

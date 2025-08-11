@@ -1,8 +1,13 @@
 {
-  "name": "@traffic.by.intent/gaql-builder",
-  "version": "0.2.0",
+  "name": "@txi-dev/gaql-builder",
+  "version": "0.3.0",
   "description": "A TypeScript library for building Google Ads Query Language (GAQL) queries programmatically",
   "sideEffects": false,
+  "private": false,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -42,12 +47,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trafficbyintent/gaql-builder.git"
+    "url": "git+https://github.com/txi-dev/gaql-query-builder.git"
   },
   "bugs": {
-    "url": "https://github.com/trafficbyintent/gaql-builder/issues"
+    "url": "https://github.com/txi-dev/gaql-query-builder/issues"
   },
-  "homepage": "https://github.com/trafficbyintent/gaql-builder#readme",
+  "homepage": "https://github.com/txi-dev/gaql-query-builder#readme",
   "devDependencies": {
     "@trafficbyintent/style-guide": "^1.1.10",
     "@types/node": "^24.1.0",
@@ -63,9 +68,5 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
   }
 }

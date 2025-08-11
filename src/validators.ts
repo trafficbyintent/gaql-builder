@@ -66,9 +66,14 @@ export function isValidDateRange(dateRange: string): boolean {
     return false;
   }
   
-  // Validate it's a real date
-  // Since we validated the regex pattern above, we know we have 3 numeric parts
-  const [year, month, day] = dateRange.split('-').map(Number);
+  /*
+   * Validate it's a real date
+   * Since we validated the regex pattern above, we know we have 3 numeric parts
+   */
+  const parts = dateRange.split('-').map(Number);
+  const year = parts[0] as number;
+  const month = parts[1] as number;
+  const day = parts[2] as number;
   const date = new Date(year, month - 1, day);
   return date.getFullYear() === year && 
          date.getMonth() === month - 1 && 
