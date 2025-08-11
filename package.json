@@ -1,9 +1,17 @@
 {
   "name": "@traffic.by.intent/gaql-builder",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A TypeScript library for building Google Ads Query Language (GAQL) queries programmatically",
+  "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
+  },
   "files": [
     "dist",
     "README.md",
@@ -21,7 +29,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run clean && npm run build && npm run test && npm run typecheck"
+    "prepublishOnly": "npm run clean && npm run build && npm run test && npm run lint && npm run typecheck"
   },
   "keywords": [
     "google-ads",
@@ -41,18 +49,17 @@
   },
   "homepage": "https://github.com/trafficbyintent/gaql-builder#readme",
   "devDependencies": {
-    "@types/node": "^20.19.8",
+    "@trafficbyintent/style-guide": "^1.1.10",
+    "@types/node": "^24.1.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@vitest/coverage-v8": "^1.0.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.0.0",
-    "google-ads-api": "^20.0.1",
-    "long": "^5.3.2",
     "prettier": "^3.0.0",
     "typescript": "^5.0.0",
-    "vitest": "^1.0.0"
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=16.0.0"

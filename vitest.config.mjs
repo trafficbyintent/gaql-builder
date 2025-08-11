@@ -1,4 +1,5 @@
-import { defineConfig } from 'vitest/config';
+/// <reference types="vitest" />
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   test: {
@@ -15,7 +16,8 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/**/*.test.ts',
         'src/**/*.spec.ts',
-        'src/__tests__/**'
+        'src/__tests__/**',
+        'src/index.ts'
       ],
       thresholds: {
         lines: 100,

@@ -28,7 +28,7 @@ describe('GaqlBuilder - Phase 1: Foundation', () => {
       
       expect(() => {
         builder.select([]).from('campaign').build();
-      }).toThrow('SELECT clause must include at least one field');
+      }).toThrow('SELECT clause requires at least one field. Expected: non-empty array, Received: empty array');
     });
   });
 
@@ -48,7 +48,7 @@ describe('GaqlBuilder - Phase 1: Foundation', () => {
       
       expect(() => {
         builder.select(['campaign.id']).build();
-      }).toThrow('FROM clause is required');
+      }).toThrow('FROM clause is required. Expected: resource name, Received: empty resource');
     });
 
     it('should handle empty FROM clause as an error', () => {
@@ -56,7 +56,7 @@ describe('GaqlBuilder - Phase 1: Foundation', () => {
       
       expect(() => {
         builder.select(['campaign.id']).from('').build();
-      }).toThrow('FROM clause must specify a resource');
+      }).toThrow('FROM clause requires a resource. Expected: non-empty string, Received: ""');
     });
   });
 
@@ -76,7 +76,7 @@ describe('GaqlBuilder - Phase 1: Foundation', () => {
       
       expect(() => {
         builder.from('campaign').build();
-      }).toThrow('SELECT clause is required');
+      }).toThrow('SELECT clause is required. Expected: at least one field selected, Received: no fields selected');
     });
   });
 

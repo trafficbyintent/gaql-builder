@@ -321,7 +321,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
           .from('campaign')
           .where('campaign.status', 'INVALID', 'ENABLED')
           .build();
-      }).toThrow('Invalid operator: INVALID');
+      }).toThrow('Invalid operator. Expected one of: =, !=, >, >=, <, <=, Received: "INVALID"');
     });
 
     it('should throw error for empty IN list', () => {

@@ -2,6 +2,38 @@ import { describe, it, expect } from 'vitest';
 import { GaqlBuilder } from '../gaqlBuilder';
 
 describe('GaqlBuilder - Additional Clauses', () => {
+  describe('GROUP BY clause', () => {
+    it('should build query with GROUP BY single field', () => {
+      const query = new GaqlBuilder()
+        .select(['campaign.id', 'SUM(metrics.clicks)'])
+        .from('campaign')
+        .groupBy(['campaign.id'])
+        .build();
+      
+      expect(query).toBe('SELECT campaign.id, SUM(metrics.clicks) FROM campaign GROUP BY campaign.id');
+    });
+
+    it('should build query with GROUP BY multiple fields', () => {
+      const query = new GaqlBuilder()
+        .select(['campaign.id', 'ad_group.id', 'SUM(metrics.impressions)'])
+        .from('campaign')
+        .groupBy(['campaign.id', 'ad_group.id'])
+        .build();
+      
+      expect(query).toBe('SELECT campaign.id, ad_group.id, SUM(metrics.impressions) FROM campaign GROUP BY campaign.id, ad_group.id');
+    });
+
+    it('should throw error for empty GROUP BY', () => {
+      expect(() => {
+        new GaqlBuilder()
+          .select(['campaign.id'])
+          .from('campaign')
+          .groupBy([])
+          .build();
+      }).toThrow('GROUP BY clause requires at least one field. Expected: non-empty array, Received: empty array');
+    });
+  });
+
   describe('ORDER BY clause', () => {
     it('should build query with ORDER BY single field ascending', () => {
       const query = new GaqlBuilder()
@@ -87,7 +119,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
           .from('campaign')
           .limit(0)
           .build();
-      }).toThrow('LIMIT must be a positive integer');
+      }).toThrow('LIMIT must be a positive integer. Expected: positive integer, Received: ');
     });
 
     it('should throw error for negative limit', () => {
@@ -97,7 +129,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
           .from('campaign')
           .limit(-5)
           .build();
-      }).toThrow('LIMIT must be a positive integer');
+      }).toThrow('LIMIT must be a positive integer. Expected: positive integer, Received: ');
     });
 
     it('should throw error for non-integer limit', () => {
@@ -107,7 +139,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
           .from('campaign')
           .limit(3.14)
           .build();
-      }).toThrow('LIMIT must be a positive integer');
+      }).toThrow('LIMIT must be a positive integer. Expected: positive integer, Received: ');
     });
 
     it('should handle large limit values', () => {
@@ -281,7 +313,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
           .from('campaign')
           .orderBy('campaign.name', 'INVALID' as any)
           .build();
-      }).toThrow('ORDER BY direction must be ASC or DESC');
+      }).toThrow('ORDER BY direction invalid. Expected: ASC or DESC');
     });
   });
 });
