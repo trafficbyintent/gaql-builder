@@ -7,8 +7,15 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  plugins: eslintConfig.plugins.filter(p => p !== 'jest'),
-  ignorePatterns: ['dist/', 'coverage/', '*.config.js', '.eslintrc.js', '.prettierrc.js', '**/*.test.ts'],
+  plugins: eslintConfig.plugins.filter((p) => p !== 'jest'),
+  ignorePatterns: [
+    'dist/',
+    'coverage/',
+    '*.config.js',
+    '.eslintrc.js',
+    '.prettierrc.js',
+    '**/*.test.ts',
+  ],
   rules: {
     ...eslintConfig.rules,
     '@trafficbyintent/require-error-context': 'off',

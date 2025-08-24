@@ -1,12 +1,15 @@
 # GAQL Query Cookbook
 
-> **Source**: [Google Ads API Documentation - Query Cookbook](https://developers.google.com/google-ads/api/docs/query/cookbook)
-> 
+> **Source**:
+> [Google Ads API Documentation - Query Cookbook](https://developers.google.com/google-ads/api/docs/query/cookbook)
+>
 > **API Version**: This documentation is current as of Google Ads API v20
 
 ## Overview
 
-This cookbook provides practical GAQL (Google Ads Query Language) query examples that replicate common data views from the Google Ads UI. These queries demonstrate how to retrieve various types of advertising data and serve as templates for building your own queries.
+This cookbook provides practical GAQL (Google Ads Query Language) query examples that replicate
+common data views from the Google Ads UI. These queries demonstrate how to retrieve various types of
+advertising data and serve as templates for building your own queries.
 
 ## Table of Contents
 
@@ -27,7 +30,7 @@ This cookbook provides practical GAQL (Google Ads Query Language) query examples
 Retrieves campaign performance metrics for the last 7 days:
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   campaign_budget.amount_micros,
   campaign.status,
@@ -46,7 +49,7 @@ ORDER BY metrics.impressions DESC
 ### Campaign with Conversion Metrics
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   metrics.conversions,
   metrics.conversion_rate,
@@ -62,7 +65,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Ad Group Performance
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   ad_group.status,
@@ -79,7 +82,7 @@ ORDER BY metrics.clicks DESC
 ### Ad Groups with Quality Score
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   ad_group_criterion.quality_info.quality_score,
@@ -95,7 +98,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Expanded Text Ads Performance
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   ad_group_ad.ad.expanded_text_ad.headline_part1,
@@ -114,7 +117,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Responsive Search Ads
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   ad_group_ad.ad.responsive_search_ad.headlines,
@@ -132,7 +135,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Search Keywords Performance
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   ad_group_criterion.keyword.text,
@@ -151,7 +154,7 @@ ORDER BY metrics.impressions DESC
 ### Keywords with Quality Score
 
 ```sql
-SELECT 
+SELECT
   ad_group_criterion.keyword.text,
   ad_group_criterion.quality_info.quality_score,
   ad_group_criterion.quality_info.creative_quality_score,
@@ -168,7 +171,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Search Terms Report
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   search_term_view.search_term,
@@ -185,7 +188,7 @@ ORDER BY metrics.impressions DESC
 ### Search Terms by Match Type
 
 ```sql
-SELECT 
+SELECT
   search_term_view.search_term,
   ad_group_criterion.keyword.text,
   ad_group_criterion.keyword.match_type,
@@ -201,7 +204,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Audience Performance
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   ad_group_criterion.user_list.name,
@@ -218,7 +221,7 @@ ORDER BY metrics.conversions DESC
 ### In-Market Audiences
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group_criterion.user_interest.name,
   metrics.impressions,
@@ -234,7 +237,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Age Range Performance
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   ad_group_criterion.age_range.type,
@@ -250,7 +253,7 @@ ORDER BY metrics.conversions DESC
 ### Gender Performance
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   ad_group_criterion.gender.type,
@@ -265,7 +268,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Combined Demographics
 
 ```sql
-SELECT 
+SELECT
   ad_group_criterion.age_range.type,
   ad_group_criterion.gender.type,
   metrics.impressions,
@@ -281,7 +284,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Geographic Performance
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   campaign_criterion.location.geo_target_constant,
   location_view.location_type,
@@ -296,7 +299,7 @@ ORDER BY metrics.impressions DESC
 ### Location with Distance
 
 ```sql
-SELECT 
+SELECT
   campaign.name,
   campaign_criterion.proximity.geo_point.longitude_in_micro_degrees,
   campaign_criterion.proximity.geo_point.latitude_in_micro_degrees,
@@ -312,7 +315,7 @@ WHERE segments.date DURING LAST_7_DAYS
 ### Look Up Geo Constants by Resource Name
 
 ```sql
-SELECT 
+SELECT
   geo_target_constant.canonical_name,
   geo_target_constant.country_code,
   geo_target_constant.name,
@@ -324,7 +327,7 @@ WHERE geo_target_constant.resource_name = 'geoTargetConstants/1014221'
 ### Search Geo Constants by Name
 
 ```sql
-SELECT 
+SELECT
   geo_target_constant.canonical_name,
   geo_target_constant.country_code,
   geo_target_constant.id,
@@ -339,31 +342,37 @@ WHERE geo_target_constant.name LIKE '%New York%'
 ## Query Best Practices
 
 ### 1. Date Ranges
+
 - Use `DURING LAST_7_DAYS` for recent data
 - Use `DURING LAST_30_DAYS` for monthly views
 - Use specific date ranges: `BETWEEN '2024-01-01' AND '2024-01-31'`
 
 ### 2. Status Filtering
+
 - Always filter out removed entities: `AND campaign.status != 'REMOVED'`
 - Focus on enabled entities for active performance: `AND ad_group.status = 'ENABLED'`
 
 ### 3. Performance Optimization
+
 - Use `LIMIT` to restrict result size
 - Order by relevant metrics: `ORDER BY metrics.impressions DESC`
 - Filter early to reduce data processing
 
 ### 4. Metric Aggregation
+
 - Metrics are automatically aggregated based on selected dimensions
 - Include `segments.date` for daily breakdowns
 - Remove date segments for total period aggregation
 
 ### 5. NULL Handling
+
 - Check for NULL values: `WHERE ad_group_criterion.quality_info.quality_score IS NOT NULL`
 - Use COALESCE for default values when needed
 
 ## Common Patterns
 
 ### Filtering by Performance Thresholds
+
 ```sql
 WHERE metrics.impressions > 1000
   AND metrics.clicks > 0
@@ -371,8 +380,9 @@ WHERE metrics.impressions > 1000
 ```
 
 ### Calculating Derived Metrics
+
 ```sql
-SELECT 
+SELECT
   campaign.name,
   metrics.cost_micros / 1000000.0 as cost,
   metrics.conversions,
@@ -381,8 +391,9 @@ FROM campaign
 ```
 
 ### Multi-Level Grouping
+
 ```sql
-SELECT 
+SELECT
   campaign.name,
   ad_group.name,
   segments.device,
@@ -394,7 +405,8 @@ GROUP BY campaign.name, ad_group.name, segments.device
 
 ## Tips for Query Builder Implementation
 
-1. **Resource Selection**: Start with the appropriate resource (campaign, ad_group, keyword_view, etc.)
+1. **Resource Selection**: Start with the appropriate resource (campaign, ad_group, keyword_view,
+   etc.)
 2. **Field Selection**: Only select fields that exist on the chosen resource
 3. **Proper Joins**: GAQL handles joins implicitly through field selection
 4. **Metric Availability**: Not all metrics are available for all resources

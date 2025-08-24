@@ -3,7 +3,7 @@
  */
 
 export const VALID_OPERATORS = ['=', '!=', '>', '>=', '<', '<='] as const;
-export type ValidOperator = typeof VALID_OPERATORS[number];
+export type ValidOperator = (typeof VALID_OPERATORS)[number];
 
 export const VALID_DATE_RANGES = [
   'TODAY',
@@ -18,20 +18,13 @@ export const VALID_DATE_RANGES = [
   'LAST_MONTH',
   'ALL_TIME',
 ] as const;
-export type ValidDateRange = typeof VALID_DATE_RANGES[number];
+export type ValidDateRange = (typeof VALID_DATE_RANGES)[number];
 
-export const AGGREGATE_FUNCTIONS = [
-  'SUM',
-  'COUNT',
-  'AVG',
-  'MIN',
-  'MAX',
-  'COUNT_DISTINCT',
-] as const;
-export type AggregateFunction = typeof AGGREGATE_FUNCTIONS[number];
+export const AGGREGATE_FUNCTIONS = ['SUM', 'COUNT', 'AVG', 'MIN', 'MAX', 'COUNT_DISTINCT'] as const;
+export type AggregateFunction = (typeof AGGREGATE_FUNCTIONS)[number];
 
 export const SORT_DIRECTIONS = ['ASC', 'DESC'] as const;
-export type SortDirection = typeof SORT_DIRECTIONS[number];
+export type SortDirection = (typeof SORT_DIRECTIONS)[number];
 
 // Query size limits to prevent memory exhaustion and DoS attacks
 export const QUERY_LIMITS = {

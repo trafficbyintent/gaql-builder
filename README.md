@@ -1,48 +1,12 @@
 # gaql-builder
 
-A TypeScript library for building Google Ads Query Language (GAQL) queries programmatically with type safety and intuitive method chaining.
+[![npm version](https://badge.fury.io/js/@txi-dev%2Fgaql-builder.svg)](https://www.npmjs.com/package/@txi-dev/gaql-builder)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Note:** This is a private package hosted on GitHub Packages. Authentication is required for installation.
+A TypeScript library for building Google Ads Query Language (GAQL) queries programmatically with
+type safety and intuitive method chaining.
 
 ## Installation
-
-### Prerequisites
-
-1. **Create a GitHub Personal Access Token (PAT)**:
-   - Go to GitHub Settings → Developer settings → Personal access tokens
-   - Generate a new token with the `read:packages` scope
-   - Save the token securely
-
-2. **Configure NPM Authentication**:
-
-   **Option A: Using npm login**
-   ```bash
-   npm login --registry=https://npm.pkg.github.com --scope=@txi-dev
-   # Username: your-github-username
-   # Password: your-github-personal-access-token
-   # Email: your-email
-   ```
-
-   **Option B: Using .npmrc file**
-   
-   Create or update `~/.npmrc` (or `.npmrc` in your project root):
-   ```bash
-   @txi-dev:registry=https://npm.pkg.github.com/
-   //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
-   ```
-
-   **Option C: Using environment variable**
-   ```bash
-   export NPM_TOKEN=your-github-personal-access-token
-   ```
-   
-   Then add to your project's `.npmrc`:
-   ```bash
-   @txi-dev:registry=https://npm.pkg.github.com/
-   //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
-   ```
-
-### Install the Package
 
 ```bash
 npm install @txi-dev/gaql-builder
@@ -110,8 +74,7 @@ builder.from('campaign');
 builder.where('campaign.status', '=', 'ENABLED');
 
 // Multiple conditions with AND
-builder.where('campaign.status', '=', 'ENABLED')
-       .andWhere('metrics.clicks', '>', 100);
+builder.where('campaign.status', '=', 'ENABLED').andWhere('metrics.clicks', '>', 100);
 
 // Complex conditions
 builder.whereLike('campaign.name', '%Brand%');
@@ -124,8 +87,7 @@ builder.whereLike('campaign.name', '%Brand%');
 builder.orderBy('metrics.clicks', 'DESC');
 
 // Multiple fields
-builder.orderBy('metrics.clicks', 'DESC')
-       .orderBy('metrics.impressions', 'ASC');
+builder.orderBy('metrics.clicks', 'DESC').orderBy('metrics.impressions', 'ASC');
 ```
 
 ### LIMIT Clause
@@ -144,10 +106,10 @@ const queryString = builder.build();
 
 ```typescript
 // Parameters only accept boolean and number values for security
-builder.parameters({ 
+builder.parameters({
   include_drafts: true,
   omit_unselected_resource_names: false,
-  metric_threshold: 100  // Numbers are also supported
+  metric_threshold: 100, // Numbers are also supported
 });
 
 // String values are NOT supported (throws error)
@@ -158,7 +120,8 @@ builder.parameters({
 
 ### Protection Against Injection Attacks
 
-1. **SQL Injection Prevention**: All string values are automatically escaped with single quotes doubled
+1. **SQL Injection Prevention**: All string values are automatically escaped with single quotes
+   doubled
 2. **Parameter Type Restrictions**: Parameters only accept `boolean` and `number` types (no strings)
 3. **Field Name Validation**: Strict validation of field names to prevent malicious input
 4. **Query Size Limits**: Built-in limits to prevent memory exhaustion attacks
@@ -176,14 +139,14 @@ All inputs are validated to ensure they conform to GAQL syntax requirements:
 // ✅ Safe - all inputs are validated and escaped
 builder
   .select(['campaign.name'])
-  .where('campaign.name', '=', "O'Reilly's Campaign")  // Automatically escaped
-  .whereIn('status', ['ENABLED', 'PAUSED'])            // Each value escaped
+  .where('campaign.name', '=', "O'Reilly's Campaign") // Automatically escaped
+  .whereIn('status', ['ENABLED', 'PAUSED']) // Each value escaped
   .build();
 
 // ❌ These will throw errors (prevented attacks)
-builder.select(['field; DROP TABLE']);  // Invalid field name
-builder.from('resource; DELETE');        // Invalid resource name
-builder.parameters({ key: "'; DROP" });  // String parameters not allowed
+builder.select(['field; DROP TABLE']); // Invalid field name
+builder.from('resource; DELETE'); // Invalid resource name
+builder.parameters({ key: "'; DROP" }); // String parameters not allowed
 ```
 
 ## Advanced Usage
@@ -213,7 +176,7 @@ const complexQuery = new GaqlBuilder()
     'ad_group_criterion.keyword.text',
     'metrics.clicks',
     'metrics.impressions',
-    'metrics.cost_micros'
+    'metrics.cost_micros',
   ])
   .from('keyword_view')
   .where('campaign.id', '=', 123456789)
@@ -233,7 +196,7 @@ The builder validates queries before building:
 ```typescript
 try {
   const query = new GaqlBuilder()
-    .from('campaign')  // Missing SELECT clause
+    .from('campaign') // Missing SELECT clause
     .build();
 } catch (error) {
   console.error(error.message); // "SELECT clause is required. Current fields: 0"
@@ -245,25 +208,30 @@ try {
 ### Common Issues
 
 **Query validation errors**
+
 - Ensure all required clauses are present (SELECT and FROM are mandatory)
 - Check that field names follow the correct format (e.g., `campaign.id`, not just `id`)
 - Verify resource names match Google Ads API resources exactly
 
 **TypeScript type errors**
+
 - Import types explicitly: `import { GaqlBuilder, type GaqlValue } from '@txi-dev/gaql-builder'`
 - Ensure TypeScript is configured with `strict: true` for best type safety
 
 **Invalid field names**
+
 - Field names must contain only letters, numbers, dots, and underscores
 - Use the exact field names from the Google Ads API documentation
 
 **Date range errors**
+
 - Use only predefined date ranges like `LAST_30_DAYS`, `TODAY`, `YESTERDAY`
 - Custom date ranges require different syntax not yet supported by this library
 
 ## Contributing
 
 Contributions are welcome! Please ensure:
+
 - All tests pass with 100% coverage
 - Linting passes with zero violations
 - Changes are documented in CHANGELOG.md

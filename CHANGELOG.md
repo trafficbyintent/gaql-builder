@@ -2,21 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project
+adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
 ## [0.3.0] - 2025-01-11
 
 ### Changed
+
 - **BREAKING**: Migrated from public NPM to private GitHub Packages
-- **BREAKING**: Changed package name from `@traffic.by.intent/gaql-builder` to `@txi-dev/gaql-builder`
+- **BREAKING**: Changed package name from `@traffic.by.intent/gaql-builder` to
+  `@txi-dev/gaql-builder`
 - **BREAKING**: Parameters now only accept `boolean` and `number` types (no strings) for security
 - Refactored `build()` method for better maintainability and reduced complexity
 - Improved error messages with standardized format: "Expected: X, Received: Y"
 
 ### Added
+
 - Custom error types for better error handling:
   - `ValidationError` for input validation failures
   - `QueryBuildError` for query construction errors
@@ -35,12 +38,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 100% test coverage across all files
 
 ### Security
+
 - Fixed critical parameter injection vulnerability by restricting parameter types
 - Added validation for regex pattern complexity to prevent ReDoS attacks
 - Implemented query size limits to prevent memory exhaustion
 - Enhanced field name and resource name validation
 
 ### Infrastructure
+
 - Updated GitHub Actions workflows for GitHub Packages publishing
 - Added permissions configuration for package access in CI/CD
 - Configured .npmrc for GitHub Packages registry
@@ -48,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.0] - Previous Release
 
 ### Added
+
 - Added GROUP BY clause support for aggregation queries
 - Added support for aggregate functions (SUM, COUNT, AVG, MIN, MAX, COUNT_DISTINCT)
 - Added GitHub Actions CI/CD workflows (ci.yml and release.yml)
@@ -59,18 +65,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added 3 new tests for GROUP BY functionality (105 total tests)
 
 ### Changed
+
 - Performance tests now use deterministic validation instead of time-based assertions
 - Optimized Object.entries() usage to avoid duplicate calls
 - Updated @trafficbyintent/style-guide to v1.1.10
 
 ### Fixed
+
 - Fixed time-dependent performance tests that could fail on slower machines
 - Fixed ESLint rule `@typescript-eslint/only-throw-error` compatibility issue
 
 ### Removed
+
 - Removed unused devDependencies: google-ads-api (77MB) and long package
 
 ### Security
+
 - Added comprehensive field name validation to prevent SQL injection in all WHERE methods
 - Added pattern escaping for LIKE and REGEXP_MATCH clauses to prevent injection
 - Added resource name validation in FROM clause
@@ -79,6 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added security documentation for parameter value handling
 
 ### Developer Experience
+
 - Comprehensive code review completed identifying 15+ improvements
 - Test quality review confirmed 100% meaningful coverage with no dynamic data
 - Deep review identified and fixed critical dependency bloat issue (77MB reduction)

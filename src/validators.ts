@@ -20,7 +20,7 @@ export function isValidFieldName(field: string): boolean {
   if (aggregatePattern.test(field)) {
     return true;
   }
-  
+
   // Allow alphanumeric, dots, underscores, and common metric prefixes
   const fieldPattern = /^[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)*$/;
   return fieldPattern.test(field);
@@ -56,16 +56,16 @@ export function isValidParameterName(paramName: string): boolean {
  */
 export function isValidDateRange(dateRange: string): boolean {
   // Check predefined ranges
-  if (VALID_DATE_RANGES.includes(dateRange as typeof VALID_DATE_RANGES[number])) {
+  if (VALID_DATE_RANGES.includes(dateRange as (typeof VALID_DATE_RANGES)[number])) {
     return true;
   }
-  
+
   // Check custom date format (YYYY-MM-DD)
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
   if (!datePattern.test(dateRange)) {
     return false;
   }
-  
+
   /*
    * Validate it's a real date
    * Since we validated the regex pattern above, we know we have 3 numeric parts
@@ -75,9 +75,7 @@ export function isValidDateRange(dateRange: string): boolean {
   const month = parts[1] as number;
   const day = parts[2] as number;
   const date = new Date(year, month - 1, day);
-  return date.getFullYear() === year && 
-         date.getMonth() === month - 1 && 
-         date.getDate() === day;
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
 }
 
 /**
@@ -86,7 +84,7 @@ export function isValidDateRange(dateRange: string): boolean {
  * @returns true if valid, false otherwise
  */
 export function isValidOperator(operator: string): boolean {
-  return VALID_OPERATORS.includes(operator as typeof VALID_OPERATORS[number]);
+  return VALID_OPERATORS.includes(operator as (typeof VALID_OPERATORS)[number]);
 }
 
 /**
@@ -104,7 +102,7 @@ export function validateFieldName(field: string): void {
 
 /**
  * Validates a resource name and throws an error if invalid.
- * @param resource - The resource name to validate  
+ * @param resource - The resource name to validate
  * @throws {Error} If the resource name is invalid
  */
 export function validateResourceName(resource: string): void {
@@ -164,25 +162,25 @@ export function isSafeRegexPattern(pattern: string): boolean {
   if (pattern.length > QUERY_LIMITS.MAX_REGEX_LENGTH) {
     return false;
   }
-  
+
   // Check for dangerous patterns that can cause exponential backtracking
   const dangerousPatterns = [
-    /(\.\*){2,}/,           // Multiple .* in sequence
-    /(\.\+){2,}/,           // Multiple .+ in sequence
-    /(\\w\*){3,}/,          // Multiple \w* in sequence (escaped backslash)
-    /(\\w\+){3,}/,          // Multiple \w+ in sequence (escaped backslash)
-    /(\[\\w\]\*){3,}/,      // Multiple [\w]* in sequence (escaped backslash)
+    /(\.\*){2,}/, // Multiple .* in sequence
+    /(\.\+){2,}/, // Multiple .+ in sequence
+    /(\\w\*){3,}/, // Multiple \w* in sequence (escaped backslash)
+    /(\\w\+){3,}/, // Multiple \w+ in sequence (escaped backslash)
+    /(\[\\w\]\*){3,}/, // Multiple [\w]* in sequence (escaped backslash)
     /\(.*\)\{(\d{3,}|\d+,)\}/, // Large repetition counts
-    /\(\.\*\|\.\*\)/,       // Alternation with overlapping patterns
-    /\(\.\+\|\.\+\)/,       // Alternation with overlapping patterns
+    /\(\.\*\|\.\*\)/, // Alternation with overlapping patterns
+    /\(\.\+\|\.\+\)/, // Alternation with overlapping patterns
   ];
-  
+
   for (const dangerous of dangerousPatterns) {
     if (dangerous.test(pattern)) {
       return false;
     }
   }
-  
+
   // Check nesting depth
   let depth = 0;
   let maxDepth = 0;
@@ -194,11 +192,11 @@ export function isSafeRegexPattern(pattern: string): boolean {
       depth = Math.max(0, depth - 1);
     }
   }
-  
+
   if (maxDepth > QUERY_LIMITS.MAX_REGEX_COMPLEXITY) {
     return false;
   }
-  
+
   return true;
 }
 

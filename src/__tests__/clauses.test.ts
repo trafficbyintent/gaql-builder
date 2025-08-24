@@ -9,8 +9,10 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .from('campaign')
         .groupBy(['campaign.id'])
         .build();
-      
-      expect(query).toBe('SELECT campaign.id, SUM(metrics.clicks) FROM campaign GROUP BY campaign.id');
+
+      expect(query).toBe(
+        'SELECT campaign.id, SUM(metrics.clicks) FROM campaign GROUP BY campaign.id',
+      );
     });
 
     it('should build query with GROUP BY multiple fields', () => {
@@ -19,18 +21,18 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .from('campaign')
         .groupBy(['campaign.id', 'ad_group.id'])
         .build();
-      
-      expect(query).toBe('SELECT campaign.id, ad_group.id, SUM(metrics.impressions) FROM campaign GROUP BY campaign.id, ad_group.id');
+
+      expect(query).toBe(
+        'SELECT campaign.id, ad_group.id, SUM(metrics.impressions) FROM campaign GROUP BY campaign.id, ad_group.id',
+      );
     });
 
     it('should throw error for empty GROUP BY', () => {
       expect(() => {
-        new GaqlBuilder()
-          .select(['campaign.id'])
-          .from('campaign')
-          .groupBy([])
-          .build();
-      }).toThrow('GROUP BY clause requires at least one field. Expected: non-empty array, Received: empty array');
+        new GaqlBuilder().select(['campaign.id']).from('campaign').groupBy([]).build();
+      }).toThrow(
+        'GROUP BY clause requires at least one field. Expected: non-empty array, Received: empty array',
+      );
     });
   });
 
@@ -41,8 +43,10 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .from('campaign')
         .orderBy('metrics.clicks', 'ASC')
         .build();
-      
-      expect(query).toBe('SELECT campaign.name, metrics.clicks FROM campaign ORDER BY metrics.clicks ASC');
+
+      expect(query).toBe(
+        'SELECT campaign.name, metrics.clicks FROM campaign ORDER BY metrics.clicks ASC',
+      );
     });
 
     it('should build query with ORDER BY single field descending', () => {
@@ -51,8 +55,10 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .from('campaign')
         .orderBy('metrics.impressions', 'DESC')
         .build();
-      
-      expect(query).toBe('SELECT campaign.name, metrics.impressions FROM campaign ORDER BY metrics.impressions DESC');
+
+      expect(query).toBe(
+        'SELECT campaign.name, metrics.impressions FROM campaign ORDER BY metrics.impressions DESC',
+      );
     });
 
     it('should default to ASC when direction not specified', () => {
@@ -61,7 +67,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .from('campaign')
         .orderBy('campaign.name')
         .build();
-      
+
       expect(query).toBe('SELECT campaign.name FROM campaign ORDER BY campaign.name ASC');
     });
 
@@ -73,8 +79,10 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .orderBy('metrics.impressions', 'DESC')
         .orderBy('campaign.name', 'ASC')
         .build();
-      
-      expect(query).toBe('SELECT campaign.name, metrics.clicks, metrics.impressions FROM campaign ORDER BY metrics.clicks DESC, metrics.impressions DESC, campaign.name ASC');
+
+      expect(query).toBe(
+        'SELECT campaign.name, metrics.clicks, metrics.impressions FROM campaign ORDER BY metrics.clicks DESC, metrics.impressions DESC, campaign.name ASC',
+      );
     });
 
     it('should handle ORDER BY with WHERE clause', () => {
@@ -84,19 +92,17 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .where('campaign.status', '=', 'ENABLED')
         .orderBy('metrics.clicks', 'DESC')
         .build();
-      
-      expect(query).toBe("SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC");
+
+      expect(query).toBe(
+        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC",
+      );
     });
   });
 
   describe('LIMIT clause', () => {
     it('should build query with LIMIT', () => {
-      const query = new GaqlBuilder()
-        .select(['campaign.name'])
-        .from('campaign')
-        .limit(10)
-        .build();
-      
+      const query = new GaqlBuilder().select(['campaign.name']).from('campaign').limit(10).build();
+
       expect(query).toBe('SELECT campaign.name FROM campaign LIMIT 10');
     });
 
@@ -108,37 +114,27 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .orderBy('metrics.clicks', 'DESC')
         .limit(5)
         .build();
-      
-      expect(query).toBe("SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC LIMIT 5");
+
+      expect(query).toBe(
+        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC LIMIT 5",
+      );
     });
 
     it('should throw error for zero limit', () => {
       expect(() => {
-        new GaqlBuilder()
-          .select(['campaign.name'])
-          .from('campaign')
-          .limit(0)
-          .build();
+        new GaqlBuilder().select(['campaign.name']).from('campaign').limit(0).build();
       }).toThrow('LIMIT must be a positive integer. Expected: positive integer, Received: ');
     });
 
     it('should throw error for negative limit', () => {
       expect(() => {
-        new GaqlBuilder()
-          .select(['campaign.name'])
-          .from('campaign')
-          .limit(-5)
-          .build();
+        new GaqlBuilder().select(['campaign.name']).from('campaign').limit(-5).build();
       }).toThrow('LIMIT must be a positive integer. Expected: positive integer, Received: ');
     });
 
     it('should throw error for non-integer limit', () => {
       expect(() => {
-        new GaqlBuilder()
-          .select(['campaign.name'])
-          .from('campaign')
-          .limit(3.14)
-          .build();
+        new GaqlBuilder().select(['campaign.name']).from('campaign').limit(3.14).build();
       }).toThrow('LIMIT must be a positive integer. Expected: positive integer, Received: ');
     });
 
@@ -148,7 +144,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .from('campaign')
         .limit(10000)
         .build();
-      
+
       expect(query).toBe('SELECT campaign.name FROM campaign LIMIT 10000');
     });
   });
@@ -160,7 +156,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .from('campaign')
         .parameters({ include_drafts: true })
         .build();
-      
+
       expect(query).toBe('SELECT campaign.name FROM campaign PARAMETERS include_drafts = true');
     });
 
@@ -168,13 +164,15 @@ describe('GaqlBuilder - Additional Clauses', () => {
       const query = new GaqlBuilder()
         .select(['campaign.name'])
         .from('campaign')
-        .parameters({ 
+        .parameters({
           include_drafts: true,
-          omit_unselected_resource_names: false
+          omit_unselected_resource_names: false,
         })
         .build();
-      
-      expect(query).toBe('SELECT campaign.name FROM campaign PARAMETERS include_drafts = true, omit_unselected_resource_names = false');
+
+      expect(query).toBe(
+        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = true, omit_unselected_resource_names = false',
+      );
     });
 
     it('should handle PARAMETERS with all other clauses', () => {
@@ -186,30 +184,30 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .limit(10)
         .parameters({ include_drafts: true })
         .build();
-      
-      expect(query).toBe("SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC LIMIT 10 PARAMETERS include_drafts = true");
+
+      expect(query).toBe(
+        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC LIMIT 10 PARAMETERS include_drafts = true",
+      );
     });
 
     it('should handle boolean parameter values', () => {
       const query = new GaqlBuilder()
         .select(['campaign.name'])
         .from('campaign')
-        .parameters({ 
+        .parameters({
           include_drafts: false,
-          omit_unselected_resource_names: true
+          omit_unselected_resource_names: true,
         })
         .build();
-      
-      expect(query).toBe('SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, omit_unselected_resource_names = true');
+
+      expect(query).toBe(
+        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, omit_unselected_resource_names = true',
+      );
     });
 
     it('should throw error for empty parameters', () => {
       expect(() => {
-        new GaqlBuilder()
-          .select(['campaign.name'])
-          .from('campaign')
-          .parameters({})
-          .build();
+        new GaqlBuilder().select(['campaign.name']).from('campaign').parameters({}).build();
       }).toThrow('PARAMETERS clause requires at least one parameter');
     });
   });
@@ -222,7 +220,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
           'campaign.status',
           'metrics.clicks',
           'metrics.impressions',
-          'metrics.ctr'
+          'metrics.ctr',
         ])
         .from('campaign')
         .where('campaign.status', '=', 'ENABLED')
@@ -232,22 +230,22 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .orderBy('metrics.clicks', 'DESC')
         .orderBy('campaign.name', 'ASC')
         .limit(50)
-        .parameters({ 
+        .parameters({
           include_drafts: false,
-          omit_unselected_resource_names: true 
+          omit_unselected_resource_names: true,
         })
         .build();
-      
+
       expect(query).toBe(
-        "SELECT campaign.name, campaign.status, metrics.clicks, metrics.impressions, metrics.ctr " +
-        "FROM campaign " +
-        "WHERE campaign.status = 'ENABLED' " +
-        "AND metrics.impressions > 1000 " +
-        "AND campaign.advertising_channel_type IN ('SEARCH', 'DISPLAY') " +
-        "AND segments.date DURING LAST_30_DAYS " +
-        "ORDER BY metrics.clicks DESC, campaign.name ASC " +
-        "LIMIT 50 " +
-        "PARAMETERS include_drafts = false, omit_unselected_resource_names = true"
+        'SELECT campaign.name, campaign.status, metrics.clicks, metrics.impressions, metrics.ctr ' +
+          'FROM campaign ' +
+          "WHERE campaign.status = 'ENABLED' " +
+          'AND metrics.impressions > 1000 ' +
+          "AND campaign.advertising_channel_type IN ('SEARCH', 'DISPLAY') " +
+          'AND segments.date DURING LAST_30_DAYS ' +
+          'ORDER BY metrics.clicks DESC, campaign.name ASC ' +
+          'LIMIT 50 ' +
+          'PARAMETERS include_drafts = false, omit_unselected_resource_names = true',
       );
     });
 
@@ -260,14 +258,14 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .where('ad_group.status', '=', 'ENABLED')
         .select(['ad_group.name', 'metrics.cost_micros'])
         .build();
-      
+
       expect(query).toBe(
-        "SELECT ad_group.name, metrics.cost_micros " +
-        "FROM ad_group " +
-        "WHERE ad_group.status = 'ENABLED' " +
-        "ORDER BY metrics.cost_micros DESC " +
-        "LIMIT 25 " +
-        "PARAMETERS include_drafts = true"
+        'SELECT ad_group.name, metrics.cost_micros ' +
+          'FROM ad_group ' +
+          "WHERE ad_group.status = 'ENABLED' " +
+          'ORDER BY metrics.cost_micros DESC ' +
+          'LIMIT 25 ' +
+          'PARAMETERS include_drafts = true',
       );
     });
   });
@@ -279,8 +277,10 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .from('campaign')
         .orderBy('campaign.resource_name', 'ASC')
         .build();
-      
-      expect(query).toBe('SELECT campaign.resource_name FROM campaign ORDER BY campaign.resource_name ASC');
+
+      expect(query).toBe(
+        'SELECT campaign.resource_name FROM campaign ORDER BY campaign.resource_name ASC',
+      );
     });
 
     it('should allow multiple calls to limit (last one wins)', () => {
@@ -291,7 +291,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .limit(50)
         .limit(25)
         .build();
-      
+
       expect(query).toBe('SELECT campaign.name FROM campaign LIMIT 25');
     });
 
@@ -302,8 +302,10 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .parameters({ include_drafts: true })
         .parameters({ include_drafts: false, omit_unselected_resource_names: true })
         .build();
-      
-      expect(query).toBe('SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, omit_unselected_resource_names = true');
+
+      expect(query).toBe(
+        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, omit_unselected_resource_names = true',
+      );
     });
 
     it('should throw error for invalid ORDER BY direction', () => {

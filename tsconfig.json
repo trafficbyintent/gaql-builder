@@ -31,14 +31,6 @@
     "isolatedModules": true,
     "moduleResolution": "node"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "tests",
-    "coverage",
-    "src/**/*.test.ts"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "tests", "coverage", "src/**/*.test.ts"]
 }

@@ -5,8 +5,23 @@
   "sideEffects": false,
   "private": false,
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "restricted"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "txi-protocols": {
+    "version-update-method": "manual-edit-only",
+    "forbidden-npm-commands": [
+      "version",
+      "publish"
+    ],
+    "forbidden-git-commands": [
+      "commit",
+      "push",
+      "tag",
+      "merge"
+    ],
+    "test-coverage-required": 100,
+    "commit-permission": "explicit-only"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,7 +49,10 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run clean && npm run build && npm run test && npm run lint && npm run typecheck"
+    "prepublishOnly": "npm run clean && npm run build && npm run test && npm run lint && npm run typecheck",
+    "version": "npm test && git add -A",
+    "postversion": "git push && git push --tags",
+    "version:local": "npm test && git add -A && echo 'Version updated locally. Run \"git push && git push --tags\" when ready.'"
   },
   "keywords": [
     "google-ads",
@@ -47,15 +65,18 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/txi-dev/gaql-query-builder.git"
+    "url": "git+https://github.com/txi-dev/gaql-builder.git"
   },
   "bugs": {
-    "url": "https://github.com/txi-dev/gaql-query-builder/issues"
+    "url": "https://github.com/txi-dev/gaql-builder/issues"
   },
-  "homepage": "https://github.com/txi-dev/gaql-query-builder#readme",
+  "homepage": "https://github.com/txi-dev/gaql-builder#readme",
   "devDependencies": {
     "@trafficbyintent/style-guide": "^1.1.10",
+    "@types/deep-eql": "^4.0.2",
+    "@types/ms": "^2.1.0",
     "@types/node": "^24.1.0",
+    "@types/yargs-parser": "^21.0.3",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitest/coverage-v8": "^3.2.4",
@@ -64,9 +85,10 @@
     "eslint-plugin-import": "^2.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.0.0",
+    "vite": "^6.3.5",
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   }
 }

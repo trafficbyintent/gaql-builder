@@ -3,9 +3,9 @@ export type GaqlValue = string | number | boolean | null;
 export type GaqlArrayValue = GaqlValue[];
 
 import { SORT_DIRECTIONS, QUERY_LIMITS } from './constants';
-import { 
-  validateFieldName, 
-  validateResourceName, 
+import {
+  validateFieldName,
+  validateResourceName,
   validateParameterName,
   validateDateRange,
   validateOperator,
@@ -16,7 +16,7 @@ import { QueryBuildError, QueryLimitError, SecurityError, ValidationError } from
 /**
  * Builder class for constructing Google Ads Query Language (GAQL) queries.
  * Provides a fluent API for building type-safe GAQL queries programmatically.
- * 
+ *
  * @example
  * const query = new GaqlBuilder()
  *   .select(['campaign.id', 'campaign.name'])
@@ -46,22 +46,24 @@ export class GaqlBuilder {
    */
   public select(fields: string[]): this {
     if (fields.length === 0) {
-      throw new ValidationError('SELECT clause requires at least one field. Expected: non-empty array, Received: empty array');
+      throw new ValidationError(
+        'SELECT clause requires at least one field. Expected: non-empty array, Received: empty array',
+      );
     }
-    
+
     if (fields.length > QUERY_LIMITS.MAX_SELECT_FIELDS) {
       throw new QueryLimitError(
         `SELECT clause exceeds maximum field limit. Expected: <= ${QUERY_LIMITS.MAX_SELECT_FIELDS} fields, Received: ${fields.length} fields`,
       );
     }
-    
+
     // Validate and process fields
     this.#selectFields = fields.map((field) => {
       const trimmedField = field.trim();
       validateFieldName(trimmedField);
       return trimmedField;
     });
-    
+
     return this;
   }
 
@@ -76,14 +78,16 @@ export class GaqlBuilder {
    */
   public from(resource: string): this {
     const trimmedResource = resource.trim();
-    
+
     if (trimmedResource === '') {
-      throw new ValidationError(`FROM clause requires a resource. Expected: non-empty string, Received: "${resource}"`);
+      throw new ValidationError(
+        `FROM clause requires a resource. Expected: non-empty string, Received: "${resource}"`,
+      );
     }
-    
+
     // Validate resource name
     validateResourceName(trimmedResource);
-    
+
     this.#fromResource = trimmedResource;
     return this;
   }
@@ -105,10 +109,10 @@ export class GaqlBuilder {
         `WHERE clause exceeds maximum condition limit. Expected: < ${QUERY_LIMITS.MAX_WHERE_CONDITIONS} conditions, Received: ${this.#whereConditions.length} conditions`,
       );
     }
-    
+
     validateOperator(operator);
     validateFieldName(field);
-    
+
     this.#whereConditions.push(this.formatCondition(field, operator, value));
     return this;
   }
@@ -142,11 +146,13 @@ export class GaqlBuilder {
    */
   public whereIn(field: string, values: GaqlArrayValue): this {
     if (values.length === 0) {
-      throw new ValidationError(`IN clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`);
+      throw new ValidationError(
+        `IN clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`,
+      );
     }
-    
+
     validateFieldName(field);
-    
+
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
     this.#whereConditions.push(`${field} IN (${formattedValues})`);
     return this;
@@ -164,11 +170,13 @@ export class GaqlBuilder {
    */
   public whereNotIn(field: string, values: GaqlArrayValue): this {
     if (values.length === 0) {
-      throw new ValidationError(`NOT IN clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`);
+      throw new ValidationError(
+        `NOT IN clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`,
+      );
     }
-    
+
     validateFieldName(field);
-    
+
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
     this.#whereConditions.push(`${field} NOT IN (${formattedValues})`);
     return this;
@@ -185,7 +193,7 @@ export class GaqlBuilder {
    */
   public whereLike(field: string, pattern: string): this {
     validateFieldName(field);
-    
+
     this.#whereConditions.push(`${field} LIKE '${this.formatPattern(pattern)}'`);
     return this;
   }
@@ -201,7 +209,7 @@ export class GaqlBuilder {
    */
   public whereNotLike(field: string, pattern: string): this {
     validateFieldName(field);
-    
+
     this.#whereConditions.push(`${field} NOT LIKE '${this.formatPattern(pattern)}'`);
     return this;
   }
@@ -216,7 +224,7 @@ export class GaqlBuilder {
    */
   public whereNull(field: string): this {
     validateFieldName(field);
-    
+
     this.#whereConditions.push(`${field} IS NULL`);
     return this;
   }
@@ -231,7 +239,7 @@ export class GaqlBuilder {
    */
   public whereNotNull(field: string): this {
     validateFieldName(field);
-    
+
     this.#whereConditions.push(`${field} IS NOT NULL`);
     return this;
   }
@@ -248,7 +256,7 @@ export class GaqlBuilder {
    */
   public whereBetween(field: string, start: GaqlValue, end: GaqlValue): this {
     validateFieldName(field);
-    
+
     const startValue = this.formatValue(start);
     const endValue = this.formatValue(end);
     this.#whereConditions.push(`${field} BETWEEN ${startValue} AND ${endValue}`);
@@ -267,11 +275,13 @@ export class GaqlBuilder {
    */
   public whereContainsAll(field: string, values: GaqlArrayValue): this {
     if (values.length === 0) {
-      throw new ValidationError(`CONTAINS ALL clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`);
+      throw new ValidationError(
+        `CONTAINS ALL clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`,
+      );
     }
-    
+
     validateFieldName(field);
-    
+
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
     this.#whereConditions.push(`${field} CONTAINS ALL (${formattedValues})`);
     return this;
@@ -289,11 +299,13 @@ export class GaqlBuilder {
    */
   public whereContainsAny(field: string, values: GaqlArrayValue): this {
     if (values.length === 0) {
-      throw new ValidationError(`CONTAINS ANY clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`);
+      throw new ValidationError(
+        `CONTAINS ANY clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`,
+      );
     }
-    
+
     validateFieldName(field);
-    
+
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
     this.#whereConditions.push(`${field} CONTAINS ANY (${formattedValues})`);
     return this;
@@ -311,11 +323,13 @@ export class GaqlBuilder {
    */
   public whereContainsNone(field: string, values: GaqlArrayValue): this {
     if (values.length === 0) {
-      throw new ValidationError(`CONTAINS NONE clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`);
+      throw new ValidationError(
+        `CONTAINS NONE clause requires at least one value. Expected: non-empty array, Received: empty array for field "${field}"`,
+      );
     }
-    
+
     validateFieldName(field);
-    
+
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
     this.#whereConditions.push(`${field} CONTAINS NONE (${formattedValues})`);
     return this;
@@ -335,11 +349,11 @@ export class GaqlBuilder {
   public whereDuring(field: string, dateRange: string): this {
     validateFieldName(field);
     validateDateRange(dateRange);
-    
+
     // Custom dates need to be quoted, predefined ranges don't
     const isCustomDate = /^\d{4}-\d{2}-\d{2}$/.test(dateRange);
     const formattedRange = isCustomDate ? `'${dateRange}'` : dateRange;
-    
+
     this.#whereConditions.push(`${field} DURING ${formattedRange}`);
     return this;
   }
@@ -356,7 +370,7 @@ export class GaqlBuilder {
   public whereRegexpMatch(field: string, pattern: string): this {
     validateFieldName(field);
     validateRegexPattern(pattern);
-    
+
     this.#whereConditions.push(`${field} REGEXP_MATCH '${this.formatPattern(pattern)}'`);
     return this;
   }
@@ -373,7 +387,7 @@ export class GaqlBuilder {
   public whereNotRegexpMatch(field: string, pattern: string): this {
     validateFieldName(field);
     validateRegexPattern(pattern);
-    
+
     this.#whereConditions.push(`${field} NOT REGEXP_MATCH '${this.formatPattern(pattern)}'`);
     return this;
   }
@@ -389,16 +403,18 @@ export class GaqlBuilder {
    */
   public groupBy(fields: string[]): this {
     if (fields.length === 0) {
-      throw new ValidationError('GROUP BY clause requires at least one field. Expected: non-empty array, Received: empty array');
+      throw new ValidationError(
+        'GROUP BY clause requires at least one field. Expected: non-empty array, Received: empty array',
+      );
     }
-    
+
     // Validate and add fields
     for (const field of fields) {
       const trimmedField = field.trim();
       validateFieldName(trimmedField);
       this.#groupByFields.push(trimmedField);
     }
-    
+
     return this;
   }
 
@@ -415,11 +431,13 @@ export class GaqlBuilder {
   public orderBy(field: string, direction: 'ASC' | 'DESC' = 'ASC'): this {
     // Runtime validation for invalid values passed with type assertion
     if (!SORT_DIRECTIONS.includes(direction)) {
-      throw new ValidationError(`ORDER BY direction invalid. Expected: ASC or DESC, Received: ${direction}`);
+      throw new ValidationError(
+        `ORDER BY direction invalid. Expected: ASC or DESC, Received: ${direction}`,
+      );
     }
-    
+
     validateFieldName(field);
-    
+
     this.#orderByFields.push({ field, direction });
     return this;
   }
@@ -434,7 +452,9 @@ export class GaqlBuilder {
    */
   public limit(count: number): this {
     if (!Number.isInteger(count) || count <= 0) {
-      throw new ValidationError(`LIMIT must be a positive integer. Expected: positive integer, Received: ${count}`);
+      throw new ValidationError(
+        `LIMIT must be a positive integer. Expected: positive integer, Received: ${count}`,
+      );
     }
     this.#limitCount = count;
     return this;
@@ -442,10 +462,10 @@ export class GaqlBuilder {
 
   /**
    * Adds query parameters for the PARAMETERS clause.
-   * 
+   *
    * SECURITY: Only boolean and number values are allowed to prevent injection attacks.
    * String values are not supported for security reasons.
-   * 
+   *
    * @param params - Object containing parameter key-value pairs (boolean or number only)
    * @returns The builder instance for method chaining
    * @throws {Error} If params object is empty
@@ -456,35 +476,37 @@ export class GaqlBuilder {
    */
   public parameters(params: Record<string, boolean | number>): this {
     const paramKeys = Object.keys(params);
-    
+
     if (paramKeys.length === 0) {
-      throw new ValidationError('PARAMETERS clause requires at least one parameter. Expected: non-empty object, Received: empty object');
+      throw new ValidationError(
+        'PARAMETERS clause requires at least one parameter. Expected: non-empty object, Received: empty object',
+      );
     }
-    
+
     if (paramKeys.length > QUERY_LIMITS.MAX_PARAMETERS) {
       throw new QueryLimitError(
         `PARAMETERS clause exceeds maximum parameter limit. Expected: <= ${QUERY_LIMITS.MAX_PARAMETERS} parameters, Received: ${paramKeys.length} parameters`,
       );
     }
-    
+
     // Validate all parameter names and values
     for (const [paramName, paramValue] of Object.entries(params)) {
       validateParameterName(paramName);
-      
+
       // Validate parameter value type for security
       if (typeof paramValue !== 'boolean' && typeof paramValue !== 'number') {
         throw new SecurityError(
           `Invalid parameter value type for '${paramName}'. Expected: boolean or number, Received: ${typeof paramValue}`,
         );
       }
-      
+
       if (typeof paramValue === 'number' && !Number.isFinite(paramValue)) {
         throw new SecurityError(
           `Invalid parameter value for '${paramName}'. Expected: finite number, Received: ${paramValue}`,
         );
       }
     }
-    
+
     this.#queryParameters = params as Record<string, GaqlValue>;
     return this;
   }
@@ -528,56 +550,60 @@ export class GaqlBuilder {
    */
   public build(): string {
     this.validateRequiredClauses();
-    
+
     const parts: string[] = [];
-    
+
     parts.push(this.buildSelectClause());
     parts.push(this.buildFromClause());
-    
+
     const whereClause = this.buildWhereClause();
     if (whereClause !== '') {
       parts.push(whereClause);
     }
-    
+
     const groupByClause = this.buildGroupByClause();
     if (groupByClause !== '') {
       parts.push(groupByClause);
     }
-    
+
     const orderByClause = this.buildOrderByClause();
     if (orderByClause !== '') {
       parts.push(orderByClause);
     }
-    
+
     const limitClause = this.buildLimitClause();
     if (limitClause !== '') {
       parts.push(limitClause);
     }
-    
+
     const parametersClause = this.buildParametersClause();
     if (parametersClause !== '') {
       parts.push(parametersClause);
     }
-    
+
     const query = parts.join(' ');
     this.validateQuerySize(query);
-    
+
     return query;
   }
-  
+
   /**
    * Validates that required clauses are present.
    * @throws {QueryBuildError} If required clauses are missing
    */
   private validateRequiredClauses(): void {
     if (this.#selectFields.length === 0) {
-      throw new QueryBuildError('SELECT clause is required. Expected: at least one field selected, Received: no fields selected');
+      throw new QueryBuildError(
+        'SELECT clause is required. Expected: at least one field selected, Received: no fields selected',
+      );
     }
     if (this.#fromResource === '') {
-      throw new QueryBuildError('FROM clause is required. Expected: resource name, Received: empty resource');
+      throw new QueryBuildError(
+        'FROM clause is required. Expected: resource name, Received: empty resource',
+      );
     }
   }
-  
+
   /**
    * Builds the SELECT clause.
    * @returns The SELECT clause string
@@ -585,7 +611,7 @@ export class GaqlBuilder {
   private buildSelectClause(): string {
     return `SELECT ${this.#selectFields.join(', ')}`;
   }
-  
+
   /**
    * Builds the FROM clause.
    * @returns The FROM clause string
@@ -593,7 +619,7 @@ export class GaqlBuilder {
   private buildFromClause(): string {
     return `FROM ${this.#fromResource}`;
   }
-  
+
   /**
    * Builds the WHERE clause if conditions exist.
    * @returns The WHERE clause string or empty string
@@ -604,7 +630,7 @@ export class GaqlBuilder {
     }
     return `WHERE ${this.#whereConditions.join(' AND ')}`;
   }
-  
+
   /**
    * Builds the GROUP BY clause if fields exist.
    * @returns The GROUP BY clause string or empty string
@@ -615,7 +641,7 @@ export class GaqlBuilder {
     }
     return `GROUP BY ${this.#groupByFields.join(', ')}`;
   }
-  
+
   /**
    * Builds the ORDER BY clause if fields exist.
    * @returns The ORDER BY clause string or empty string
@@ -627,7 +653,7 @@ export class GaqlBuilder {
     const orderByParts = this.#orderByFields.map(({ field, direction }) => `${field} ${direction}`);
     return `ORDER BY ${orderByParts.join(', ')}`;
   }
-  
+
   /**
    * Builds the LIMIT clause if set.
    * @returns The LIMIT clause string or empty string
@@ -638,7 +664,7 @@ export class GaqlBuilder {
     }
     return `LIMIT ${this.#limitCount}`;
   }
-  
+
   /**
    * Builds the PARAMETERS clause if parameters exist.
    * @returns The PARAMETERS clause string or empty string
@@ -648,11 +674,12 @@ export class GaqlBuilder {
     if (paramEntries.length === 0) {
       return '';
     }
-    const paramParts = paramEntries
-      .map(([key, value]) => `${key} = ${this.formatParameterValue(value)}`);
+    const paramParts = paramEntries.map(
+      ([key, value]) => `${key} = ${this.formatParameterValue(value)}`,
+    );
     return `PARAMETERS ${paramParts.join(', ')}`;
   }
-  
+
   /**
    * Validates the final query size.
    * @param query - The complete query string
@@ -671,11 +698,11 @@ export class GaqlBuilder {
    * Note: GAQL parameter values are not quoted like regular string values.
    * Boolean values are converted to lowercase 'true'/'false'.
    * All other values are converted to strings without quotes.
-   * 
+   *
    * SECURITY NOTE: String parameter values are not escaped or quoted.
    * This is by design as GAQL parameters are typically used for boolean flags
    * and not user-provided strings. Avoid using user input in parameters.
-   * 
+   *
    * @param value - The parameter value to format
    * @returns The formatted parameter value
    */
