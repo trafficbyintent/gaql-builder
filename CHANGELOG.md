@@ -7,6 +7,32 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-01-24
+
+### Changed
+
+- **BREAKING**: Package now published as public npm package `@txi-dev/gaql-builder`
+- Updated to `@trafficbyintent/style-guide` v1.2.1
+- Updated Node.js engine requirement to >=18.0.0
+- Migrated CI/CD to support npm registry for style-guide dependency
+
+### Added
+
+- Public npm release workflow with manual version management
+- TXI protocols configuration for version and commit management
+- Support for both GitHub Packages and npm registry authentication
+
+### Fixed
+
+- CI/CD authentication for mixed registry dependencies
+- Package-lock.json to use correct registry for style-guide
+
+### Developer Experience
+
+- Configured for public npm release with GitHub Actions
+- Added comprehensive release documentation in CLAUDE.md
+- Full code review completed with 100% test coverage verified
+
 ## [0.3.0] - 2025-01-11
 
 ### Changed
@@ -158,6 +184,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Consumer-focused README with examples
 - MIT License
 
-[Unreleased]: https://github.com/trafficbyintent/gaql-builder/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/trafficbyintent/gaql-builder/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/trafficbyintent/gaql-builder/releases/tag/v0.1.0
+[Unreleased]: https://github.com/txi-dev/gaql-builder/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/txi-dev/gaql-builder/compare/v0.3.0...v1.0.0
+[0.3.0]: https://github.com/txi-dev/gaql-builder/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/txi-dev/gaql-builder/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/txi-dev/gaql-builder/releases/tag/v0.1.0

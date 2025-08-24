@@ -1,6 +1,6 @@
 {
   "name": "@txi-dev/gaql-builder",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "A TypeScript library for building Google Ads Query Language (GAQL) queries programmatically",
   "sideEffects": false,
   "private": false,
@@ -72,7 +72,7 @@
   },
   "homepage": "https://github.com/txi-dev/gaql-builder#readme",
   "devDependencies": {
-    "@trafficbyintent/style-guide": "^1.1.10",
+    "@trafficbyintent/style-guide": "^1.2.1",
     "@types/deep-eql": "^4.0.2",
     "@types/ms": "^2.1.0",
     "@types/node": "^24.1.0",
