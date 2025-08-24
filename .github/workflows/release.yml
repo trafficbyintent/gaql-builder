@@ -64,9 +64,9 @@ jobs:
           tag_name: v${{ steps.package-version.outputs.version }}
           name: Release v${{ steps.package-version.outputs.version }}
           body: |
-            ## @txi-dev/gaql-builder v${{ steps.package-version.outputs.version }}
+            ## @trafficbyintent/gaql-builder v${{ steps.package-version.outputs.version }}
 
-            Published to npm: https://www.npmjs.com/package/@txi-dev/gaql-builder
+            Published to npm: https://www.npmjs.com/package/@trafficbyintent/gaql-builder
 
             See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
           draft: false
