@@ -11,7 +11,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- **BREAKING**: Package now published as public npm package `@txi-dev/gaql-builder`
+- **BREAKING**: Package now published as public npm package `@trafficbyintent/gaql-builder`
 - Updated to `@trafficbyintent/style-guide` v1.2.1
 - Updated Node.js engine requirement to >=18.0.0
 - Migrated CI/CD to support npm registry for style-guide dependency

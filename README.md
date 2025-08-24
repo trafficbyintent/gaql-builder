@@ -1,6 +1,6 @@
 # gaql-builder
 
-[![npm version](https://badge.fury.io/js/@txi-dev%2Fgaql-builder.svg)](https://www.npmjs.com/package/@txi-dev/gaql-builder)
+[![npm version](https://badge.fury.io/js/@trafficbyintent%2Fgaql-builder.svg)](https://www.npmjs.com/package/@trafficbyintent/gaql-builder)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A TypeScript library for building Google Ads Query Language (GAQL) queries programmatically with
@@ -9,13 +9,13 @@ type safety and intuitive method chaining.
 ## Installation
 
 ```bash
-npm install @txi-dev/gaql-builder
+npm install @trafficbyintent/gaql-builder
 ```
 
 ## Quick Start
 
 ```typescript
-import { GaqlBuilder } from '@txi-dev/gaql-builder';
+import { GaqlBuilder } from '@trafficbyintent/gaql-builder';
 
 const query = new GaqlBuilder()
   .select(['campaign.id', 'campaign.name', 'metrics.clicks'])
@@ -46,7 +46,7 @@ console.log(query);
 ### Creating a Query Builder
 
 ```typescript
-import { GaqlBuilder } from '@txi-dev/gaql-builder';
+import { GaqlBuilder } from '@trafficbyintent/gaql-builder';
 
 const builder = new GaqlBuilder();
 ```
