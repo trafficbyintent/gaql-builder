@@ -1,6 +1,7 @@
 # GAQL Grammar Reference
 
-This document provides a comprehensive reference for the Google Ads Query Language (GAQL) grammar, based on the official Google Ads API documentation.
+This document provides a comprehensive reference for the Google Ads Query Language (GAQL) grammar,
+based on the official Google Ads API documentation.
 
 ## Query Structure
 
@@ -19,6 +20,7 @@ ParametersClause = PARAMETERS Literal "=" Value {"," Literal "=" Value}
 ## Basic Syntax Elements
 
 ### Field Names
+
 ```
 FieldName = [SegmentFieldName ","] AttributeFieldName {"," FieldName} [MetricFieldName {"," MetricFieldName}]
 SegmentFieldName = Segments "." FieldName
@@ -27,6 +29,7 @@ MetricFieldName = Metrics "." FieldName
 ```
 
 ### Resources and Segments
+
 - `ResourceName`: The name of the resource being queried (e.g., `campaign`, `ad_group`)
 - `Segments`: Special prefix for segmentation fields
 - `Metrics`: Special prefix for metric fields
@@ -34,6 +37,7 @@ MetricFieldName = Metrics "." FieldName
 ## WHERE Clause Grammar
 
 ### Conditions
+
 ```
 Condition = FieldName Operator Value
           | FieldName BETWEEN Value AND Value
@@ -52,11 +56,13 @@ Condition = FieldName Operator Value
 ```
 
 ### Operators
+
 ```
 Operator = "=" | "!=" | ">" | ">=" | "<" | "<="
 ```
 
 ### Values
+
 ```
 Value = Literal | Number | StringList | NumberList | BoolList
 Literal = "'" {ANY_CHAR} "'"
@@ -72,6 +78,7 @@ Bool = TRUE | FALSE
 GAQL supports both predefined and custom date ranges:
 
 ### Predefined Date Ranges
+
 ```
 DateRange = TODAY
           | YESTERDAY
@@ -90,6 +97,7 @@ DateRange = TODAY
 ```
 
 ### Custom Date Ranges
+
 ```
 CustomDateRange = Date TO Date
 Date = YYYY-MM-DD
@@ -105,11 +113,13 @@ Direction = ASC | DESC
 ## Special Characters and Escaping
 
 ### String Literals
+
 - Enclosed in single quotes: `'value'`
 - To include a single quote in a string, escape it with backslash: `\'`
 - To include a backslash, double it: `\\`
 
 ### Regular Expressions
+
 - Uses RE2 syntax
 - Pattern must be enclosed in quotes
 - Special regex characters must be escaped
@@ -117,10 +127,12 @@ Direction = ASC | DESC
 ## Function Reference
 
 ### String Functions
+
 - `REGEXP_MATCH(field, pattern)`: Matches field against RE2 regular expression
 - `NOT REGEXP_MATCH(field, pattern)`: Negative regex match
 
 ### List Functions
+
 - `CONTAINS ALL`: Field must contain all specified values
 - `CONTAINS ANY`: Field must contain at least one specified value
 - `CONTAINS NONE`: Field must not contain any specified values
@@ -128,6 +140,7 @@ Direction = ASC | DESC
 ## Examples
 
 ### Basic Query
+
 ```sql
 SELECT campaign.id, campaign.name, metrics.clicks
 FROM campaign
@@ -135,6 +148,7 @@ WHERE metrics.impressions > 100
 ```
 
 ### Query with Multiple Conditions
+
 ```sql
 SELECT ad_group.id, ad_group.name, metrics.cost_per_click
 FROM ad_group
@@ -144,6 +158,7 @@ WHERE campaign.id = 123456789
 ```
 
 ### Query with Date Range
+
 ```sql
 SELECT campaign.name, metrics.clicks, metrics.impressions
 FROM campaign
@@ -153,6 +168,7 @@ LIMIT 10
 ```
 
 ### Query with REGEXP_MATCH
+
 ```sql
 SELECT campaign.name
 FROM campaign
@@ -160,6 +176,7 @@ WHERE campaign.name REGEXP_MATCH '(?i).*promotion.*'
 ```
 
 ### Query with IN Operator
+
 ```sql
 SELECT campaign.id, campaign.name
 FROM campaign
@@ -167,6 +184,7 @@ WHERE campaign.status IN ('ENABLED', 'PAUSED')
 ```
 
 ### Query with CONTAINS
+
 ```sql
 SELECT ad_group_ad.ad.id
 FROM ad_group_ad
@@ -175,7 +193,8 @@ WHERE ad_group_ad.ad.final_urls CONTAINS ANY ('example.com', 'test.com')
 
 ## Grammar Limitations
 
-1. **Case Sensitivity**: Keywords are case-insensitive, but field names and enum values are case-sensitive
+1. **Case Sensitivity**: Keywords are case-insensitive, but field names and enum values are
+   case-sensitive
 2. **Comment Support**: GAQL does not support comments
 3. **Subqueries**: Not supported
 4. **Joins**: Not supported (use resource references instead)

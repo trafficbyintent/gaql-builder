@@ -1,19 +1,16 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch: # Manual trigger only, no inputs needed
 
 jobs:
-  release:
-    name: Release to GitHub Packages
+  publish:
+    name: Release to npm
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      packages: write # Required for GitHub Packages
-    
+      contents: write
+      packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,14 +19,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@txi-dev'
+          registry-url: 'https://registry.npmjs.org/'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
         run: npm test
@@ -46,8 +43,31 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Publish to GitHub Packages
-        run: npm publish
+      # Get version from package.json
+      - name: Get package version
+        id: package-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Publishing version: $VERSION"
+
+      # Publish to npm
+      - name: Publish to npm
+        run: npm publish --access=public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Create GitHub Release
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.package-version.outputs.version }}
+          name: Release v${{ steps.package-version.outputs.version }}
+          body: |
+            ## @txi-dev/gaql-builder v${{ steps.package-version.outputs.version }}
+
+            Published to npm: https://www.npmjs.com/package/@txi-dev/gaql-builder
+
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
+          draft: false
+          prerelease: false

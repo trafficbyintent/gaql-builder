@@ -11,12 +11,12 @@ describe('GaqlBuilder - ReDoS Protection', () => {
       expect(isSafeRegexPattern('[a-zA-Z0-9]+')).toBe(true);
       expect(isSafeRegexPattern('sale|discount|offer')).toBe(true);
     });
-    
+
     it('should reject patterns with excessive length', () => {
       const longPattern = 'a'.repeat(1001); // Over MAX_REGEX_LENGTH
       expect(isSafeRegexPattern(longPattern)).toBe(false);
     });
-    
+
     it('should reject patterns with dangerous repetitions', () => {
       expect(isSafeRegexPattern('.*.*')).toBe(false);
       expect(isSafeRegexPattern('.+.+')).toBe(false);
@@ -24,12 +24,12 @@ describe('GaqlBuilder - ReDoS Protection', () => {
       expect(isSafeRegexPattern('(.*){1000}')).toBe(false);
       expect(isSafeRegexPattern('(a+){100,}')).toBe(false);
     });
-    
+
     it('should reject patterns with dangerous alternations', () => {
       expect(isSafeRegexPattern('(.*|.*)')).toBe(false);
       expect(isSafeRegexPattern('(.+|.+)')).toBe(false);
     });
-    
+
     it('should reject patterns with excessive nesting', () => {
       let deepPattern = 'a';
       for (let i = 0; i < 60; i++) {
@@ -37,13 +37,13 @@ describe('GaqlBuilder - ReDoS Protection', () => {
       }
       expect(isSafeRegexPattern(deepPattern)).toBe(false);
     });
-    
+
     it('should accept patterns with reasonable nesting', () => {
       expect(isSafeRegexPattern('(([a-z]+)_([0-9]+))')).toBe(true);
       expect(isSafeRegexPattern('((test|prod)_(v1|v2))')).toBe(true);
     });
   });
-  
+
   describe('whereRegexpMatch with ReDoS protection', () => {
     it('should accept safe regex patterns', () => {
       const query = new GaqlBuilder()
@@ -51,10 +51,12 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .from('campaign')
         .whereRegexpMatch('campaign.name', '(?i).*brand.*')
         .build();
-      
-      expect(query).toBe("SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '(?i).*brand.*'");
+
+      expect(query).toBe(
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '(?i).*brand.*'",
+      );
     });
-    
+
     it('should reject dangerous regex patterns', () => {
       expect(() => {
         new GaqlBuilder()
@@ -64,7 +66,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
           .build();
       }).toThrow(/Regex pattern is potentially dangerous/);
     });
-    
+
     it('should reject excessively long patterns', () => {
       const longPattern = 'a'.repeat(1001);
       expect(() => {
@@ -75,7 +77,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
           .build();
       }).toThrow(/Regex pattern is potentially dangerous/);
     });
-    
+
     it('should reject patterns with dangerous repetitions', () => {
       expect(() => {
         new GaqlBuilder()
@@ -86,7 +88,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
       }).toThrow(/Regex pattern is potentially dangerous/);
     });
   });
-  
+
   describe('whereNotRegexpMatch with ReDoS protection', () => {
     it('should accept safe regex patterns', () => {
       const query = new GaqlBuilder()
@@ -94,10 +96,12 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .from('campaign')
         .whereNotRegexpMatch('campaign.name', '^test_')
         .build();
-      
-      expect(query).toBe("SELECT campaign.name FROM campaign WHERE campaign.name NOT REGEXP_MATCH '^test_'");
+
+      expect(query).toBe(
+        "SELECT campaign.name FROM campaign WHERE campaign.name NOT REGEXP_MATCH '^test_'",
+      );
     });
-    
+
     it('should reject dangerous regex patterns', () => {
       expect(() => {
         new GaqlBuilder()
@@ -108,7 +112,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
       }).toThrow(/Regex pattern is potentially dangerous/);
     });
   });
-  
+
   describe('Complex patterns edge cases', () => {
     it('should handle escaped special characters safely', () => {
       const query = new GaqlBuilder()
@@ -116,18 +120,22 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .from('campaign')
         .whereRegexpMatch('campaign.name', 'test\\.\\*campaign')
         .build();
-      
-      expect(query).toBe("SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH 'test\\.\\*campaign'");
+
+      expect(query).toBe(
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH 'test\\.\\*campaign'",
+      );
     });
-    
+
     it('should handle character classes safely', () => {
       const query = new GaqlBuilder()
         .select(['campaign.name'])
         .from('campaign')
         .whereRegexpMatch('campaign.name', '[a-zA-Z0-9_-]+')
         .build();
-      
-      expect(query).toBe("SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '[a-zA-Z0-9_-]+'");
+
+      expect(query).toBe(
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '[a-zA-Z0-9_-]+'",
+      );
     });
   });
 });

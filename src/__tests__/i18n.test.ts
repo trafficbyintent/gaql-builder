@@ -9,7 +9,7 @@ describe('GaqlBuilder - Internationalization', () => {
         .from('campaign')
         .where('name', '=', 'キャンペーン')
         .build();
-      expect(query).toContain('\'キャンペーン\'');
+      expect(query).toContain("'キャンペーン'");
     });
 
     it('should handle Arabic characters in values', () => {
@@ -18,7 +18,7 @@ describe('GaqlBuilder - Internationalization', () => {
         .from('campaign')
         .where('name', '=', 'حملة إعلانية')
         .build();
-      expect(query).toContain('\'حملة إعلانية\'');
+      expect(query).toContain("'حملة إعلانية'");
     });
 
     it('should handle emoji in values', () => {
@@ -27,7 +27,7 @@ describe('GaqlBuilder - Internationalization', () => {
         .from('campaign')
         .where('name', '=', '🚀 Launch Campaign')
         .build();
-      expect(query).toContain('\'🚀 Launch Campaign\'');
+      expect(query).toContain("'🚀 Launch Campaign'");
     });
 
     it('should handle mixed scripts in complex queries', () => {
@@ -36,9 +36,9 @@ describe('GaqlBuilder - Internationalization', () => {
         .from('campaign')
         .whereContainsAny('name', ['中文', 'العربية', 'עברית'])
         .build();
-      expect(query).toContain('\'中文\'');
-      expect(query).toContain('\'العربية\'');
-      expect(query).toContain('\'עברית\'');
+      expect(query).toContain("'中文'");
+      expect(query).toContain("'العربية'");
+      expect(query).toContain("'עברית'");
     });
   });
 });

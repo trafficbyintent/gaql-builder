@@ -2,7 +2,8 @@
 
 This document covers how to order and limit results in Google Ads Query Language (GAQL) queries.
 
-**Source**: [Google Ads API Documentation - Ordering and Limiting](https://developers.google.com/google-ads/api/docs/query/ordering-limiting)
+**Source**:
+[Google Ads API Documentation - Ordering and Limiting](https://developers.google.com/google-ads/api/docs/query/ordering-limiting)
 
 ## Ordering Results
 
@@ -35,11 +36,13 @@ ORDER BY campaign.name
 
 You **CANNOT** order by:
 
-1. **Non-selected resource attributes** - Any resource attribute must be in the SELECT clause to use in ORDER BY
+1. **Non-selected resource attributes** - Any resource attribute must be in the SELECT clause to use
+   in ORDER BY
 2. **Non-selected metrics or segments** - Metrics and segments must be selected to order by them
 3. **Fields of type MESSAGE** - Complex message type fields cannot be used for ordering
 4. **Repeated fields** - Fields that can have multiple values cannot be used for ordering
-5. **Attributes of repeated fields** - Even primitive attributes within repeated fields cannot be used for ordering
+5. **Attributes of repeated fields** - Even primitive attributes within repeated fields cannot be
+   used for ordering
 
 ### Valid Ordering Examples
 
@@ -90,11 +93,14 @@ This query returns the top 5 campaigns by impressions over the last 30 days.
 
 ## Filtering Limitations
 
-While not strictly related to ordering and limiting, it's important to understand filtering restrictions that may affect your queries:
+While not strictly related to ordering and limiting, it's important to understand filtering
+restrictions that may affect your queries:
 
 ### Filtering is NOT permitted on:
 
-1. **Segments without selecting them** - Exception: core date segments (segments.date, segments.week, segments.month, segments.quarter, segments.year) can be used in WHERE without selecting
+1. **Segments without selecting them** - Exception: core date segments (segments.date,
+   segments.week, segments.month, segments.quarter, segments.year) can be used in WHERE without
+   selecting
 2. **Message type fields** - Except for primitive fields within messages
 3. **Repeated field attributes** - Except for primitive types within repeated fields
 
@@ -126,10 +132,13 @@ WHERE segments.device = 'MOBILE'
 
 ## Best Practices
 
-1. **Always select fields you want to order by** - This ensures the query is valid and the results make sense
-2. **Use LIMIT with ORDER BY** - When using LIMIT, combine it with ORDER BY to get predictable results
+1. **Always select fields you want to order by** - This ensures the query is valid and the results
+   make sense
+2. **Use LIMIT with ORDER BY** - When using LIMIT, combine it with ORDER BY to get predictable
+   results
 3. **Consider performance** - Ordering large result sets can impact query performance
-4. **Be explicit with sort direction** - While ASC is default, being explicit improves query readability
+4. **Be explicit with sort direction** - While ASC is default, being explicit improves query
+   readability
 
 ## Common Use Cases
 
