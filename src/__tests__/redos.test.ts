@@ -53,7 +53,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '(?i).*brand.*'",
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '(?i).*brand.*'"
       );
     });
 
@@ -98,7 +98,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name NOT REGEXP_MATCH '^test_'",
+        "SELECT campaign.name FROM campaign WHERE campaign.name NOT REGEXP_MATCH '^test_'"
       );
     });
 
@@ -122,7 +122,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH 'test\\.\\*campaign'",
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH 'test\\.\\*campaign'"
       );
     });
 
@@ -134,7 +134,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '[a-zA-Z0-9_-]+'",
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '[a-zA-Z0-9_-]+'"
       );
     });
   });

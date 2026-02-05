@@ -23,7 +23,7 @@ describe('GaqlBuilder - Concurrent Usage', () => {
         new GaqlBuilder()
           .select([`field${i}`])
           .from('campaign')
-          .where('id', '=', i),
+          .where('id', '=', i)
       );
     }
 

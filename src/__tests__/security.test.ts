@@ -16,7 +16,7 @@ describe('GaqlBuilder - Security', () => {
       expect(() => {
         new GaqlBuilder().select(['field"; DROP TABLE campaign; --']).from('campaign').build();
       }).toThrow(
-        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "field"; DROP TABLE campaign; --"',
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "field"; DROP TABLE campaign; --"'
       );
     });
 
@@ -41,7 +41,7 @@ describe('GaqlBuilder - Security', () => {
           .parameters({ 'param"; DROP TABLE': 'value' })
           .build();
       }).toThrow(
-        'Invalid parameter name. Expected: alphanumeric with underscores only, Received: "param"; DROP TABLE"',
+        'Invalid parameter name. Expected: alphanumeric with underscores only, Received: "param"; DROP TABLE"'
       );
     });
   });
@@ -80,7 +80,7 @@ describe('GaqlBuilder - Security', () => {
       expect(() => {
         new GaqlBuilder().select(['id']).from('campaign; DROP TABLE users').build();
       }).toThrow(
-        'Invalid resource name. Expected: alphanumeric with underscores only, Received: "campaign; DROP TABLE users"',
+        'Invalid resource name. Expected: alphanumeric with underscores only, Received: "campaign; DROP TABLE users"'
       );
     });
 
@@ -88,7 +88,7 @@ describe('GaqlBuilder - Security', () => {
       expect(() => {
         new GaqlBuilder().select(['id']).from('campaign.subcampaign').build();
       }).toThrow(
-        'Invalid resource name. Expected: alphanumeric with underscores only, Received: "campaign.subcampaign"',
+        'Invalid resource name. Expected: alphanumeric with underscores only, Received: "campaign.subcampaign"'
       );
     });
   });
@@ -102,7 +102,7 @@ describe('GaqlBuilder - Security', () => {
           .whereIn('id; DROP TABLE', [1, 2, 3])
           .build();
       }).toThrow(
-        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "id; DROP TABLE"',
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "id; DROP TABLE"'
       );
     });
 
@@ -114,7 +114,7 @@ describe('GaqlBuilder - Security', () => {
           .whereLike('name"; DELETE FROM', '%test%')
           .build();
       }).toThrow(
-        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "name"; DELETE FROM"',
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "name"; DELETE FROM"'
       );
     });
 
@@ -122,7 +122,7 @@ describe('GaqlBuilder - Security', () => {
       expect(() => {
         new GaqlBuilder().select(['id']).from('campaign').whereNull('end_date; --').build();
       }).toThrow(
-        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received:',
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received:'
       );
     });
 
@@ -134,7 +134,7 @@ describe('GaqlBuilder - Security', () => {
           .whereBetween('metrics.clicks"; DROP TABLE', 1, 100)
           .build();
       }).toThrow(
-        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "metrics.clicks"; DROP TABLE"',
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "metrics.clicks"; DROP TABLE"'
       );
     });
 
@@ -146,7 +146,7 @@ describe('GaqlBuilder - Security', () => {
           .whereContainsAny('urls; DROP TABLE', ['example.com'])
           .build();
       }).toThrow(
-        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received:',
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received:'
       );
     });
 
@@ -158,7 +158,7 @@ describe('GaqlBuilder - Security', () => {
           .whereDuring('date; DROP TABLE', 'LAST_7_DAYS')
           .build();
       }).toThrow(
-        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received:',
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received:'
       );
     });
 
@@ -170,7 +170,7 @@ describe('GaqlBuilder - Security', () => {
           .whereRegexpMatch('name; DROP TABLE', '.*test.*')
           .build();
       }).toThrow(
-        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received:',
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received:'
       );
     });
   });
@@ -184,7 +184,7 @@ describe('GaqlBuilder - Security', () => {
           .whereDuring('segments.date', 'LAST_7_DAYS; DROP TABLE')
           .build();
       }).toThrow(
-        'Invalid date range. Expected one of: TODAY, YESTERDAY, LAST_7_DAYS, LAST_14_DAYS, LAST_30_DAYS, LAST_BUSINESS_WEEK, LAST_WEEK_SUN_SAT, LAST_WEEK_MON_SUN, THIS_MONTH, LAST_MONTH, ALL_TIME, or date in YYYY-MM-DD format, Received: "LAST_7_DAYS; DROP TABLE"',
+        'Invalid date range. Expected one of: TODAY, YESTERDAY, LAST_7_DAYS, LAST_14_DAYS, LAST_30_DAYS, LAST_BUSINESS_WEEK, LAST_WEEK_SUN_SAT, LAST_WEEK_MON_SUN, THIS_MONTH, LAST_MONTH, ALL_TIME, or date in YYYY-MM-DD format, Received: "LAST_7_DAYS; DROP TABLE"'
       );
     });
 
@@ -196,7 +196,7 @@ describe('GaqlBuilder - Security', () => {
           .whereDuring('segments.date', 'INVALID_RANGE')
           .build();
       }).toThrow(
-        'Invalid date range. Expected one of: TODAY, YESTERDAY, LAST_7_DAYS, LAST_14_DAYS, LAST_30_DAYS, LAST_BUSINESS_WEEK, LAST_WEEK_SUN_SAT, LAST_WEEK_MON_SUN, THIS_MONTH, LAST_MONTH, ALL_TIME, or date in YYYY-MM-DD format, Received: "INVALID_RANGE"',
+        'Invalid date range. Expected one of: TODAY, YESTERDAY, LAST_7_DAYS, LAST_14_DAYS, LAST_30_DAYS, LAST_BUSINESS_WEEK, LAST_WEEK_SUN_SAT, LAST_WEEK_MON_SUN, THIS_MONTH, LAST_MONTH, ALL_TIME, or date in YYYY-MM-DD format, Received: "INVALID_RANGE"'
       );
     });
 

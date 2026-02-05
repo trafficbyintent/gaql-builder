@@ -11,7 +11,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.id, SUM(metrics.clicks) FROM campaign GROUP BY campaign.id',
+        'SELECT campaign.id, SUM(metrics.clicks) FROM campaign GROUP BY campaign.id'
       );
     });
 
@@ -23,7 +23,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.id, ad_group.id, SUM(metrics.impressions) FROM campaign GROUP BY campaign.id, ad_group.id',
+        'SELECT campaign.id, ad_group.id, SUM(metrics.impressions) FROM campaign GROUP BY campaign.id, ad_group.id'
       );
     });
 
@@ -31,7 +31,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
       expect(() => {
         new GaqlBuilder().select(['campaign.id']).from('campaign').groupBy([]).build();
       }).toThrow(
-        'GROUP BY clause requires at least one field. Expected: non-empty array, Received: empty array',
+        'GROUP BY clause requires at least one field. Expected: non-empty array, Received: empty array'
       );
     });
   });
@@ -45,7 +45,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name, metrics.clicks FROM campaign ORDER BY metrics.clicks ASC',
+        'SELECT campaign.name, metrics.clicks FROM campaign ORDER BY metrics.clicks ASC'
       );
     });
 
@@ -57,7 +57,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name, metrics.impressions FROM campaign ORDER BY metrics.impressions DESC',
+        'SELECT campaign.name, metrics.impressions FROM campaign ORDER BY metrics.impressions DESC'
       );
     });
 
@@ -81,7 +81,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name, metrics.clicks, metrics.impressions FROM campaign ORDER BY metrics.clicks DESC, metrics.impressions DESC, campaign.name ASC',
+        'SELECT campaign.name, metrics.clicks, metrics.impressions FROM campaign ORDER BY metrics.clicks DESC, metrics.impressions DESC, campaign.name ASC'
       );
     });
 
@@ -94,7 +94,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC",
+        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC"
       );
     });
   });
@@ -116,7 +116,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC LIMIT 5",
+        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC LIMIT 5"
       );
     });
 
@@ -171,7 +171,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = true, omit_unselected_resource_names = false',
+        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = true, omit_unselected_resource_names = false'
       );
     });
 
@@ -186,7 +186,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC LIMIT 10 PARAMETERS include_drafts = true",
+        "SELECT campaign.name, metrics.clicks FROM campaign WHERE campaign.status = 'ENABLED' ORDER BY metrics.clicks DESC LIMIT 10 PARAMETERS include_drafts = true"
       );
     });
 
@@ -201,7 +201,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, omit_unselected_resource_names = true',
+        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, omit_unselected_resource_names = true'
       );
     });
 
@@ -245,7 +245,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
           'AND segments.date DURING LAST_30_DAYS ' +
           'ORDER BY metrics.clicks DESC, campaign.name ASC ' +
           'LIMIT 50 ' +
-          'PARAMETERS include_drafts = false, omit_unselected_resource_names = true',
+          'PARAMETERS include_drafts = false, omit_unselected_resource_names = true'
       );
     });
 
@@ -265,7 +265,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
           "WHERE ad_group.status = 'ENABLED' " +
           'ORDER BY metrics.cost_micros DESC ' +
           'LIMIT 25 ' +
-          'PARAMETERS include_drafts = true',
+          'PARAMETERS include_drafts = true'
       );
     });
   });
@@ -279,7 +279,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.resource_name FROM campaign ORDER BY campaign.resource_name ASC',
+        'SELECT campaign.resource_name FROM campaign ORDER BY campaign.resource_name ASC'
       );
     });
 
@@ -304,7 +304,7 @@ describe('GaqlBuilder - Additional Clauses', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, omit_unselected_resource_names = true',
+        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, omit_unselected_resource_names = true'
       );
     });
 

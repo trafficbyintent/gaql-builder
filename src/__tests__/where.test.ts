@@ -75,7 +75,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.status = 'ENABLED' AND metrics.clicks > 10 AND metrics.impressions >= 100",
+        "SELECT campaign.name FROM campaign WHERE campaign.status = 'ENABLED' AND metrics.clicks > 10 AND metrics.impressions >= 100"
       );
     });
   });
@@ -89,7 +89,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.status IN ('ENABLED', 'PAUSED')",
+        "SELECT campaign.name FROM campaign WHERE campaign.status IN ('ENABLED', 'PAUSED')"
       );
     });
 
@@ -101,7 +101,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.advertising_channel_type NOT IN ('DISPLAY', 'VIDEO')",
+        "SELECT campaign.name FROM campaign WHERE campaign.advertising_channel_type NOT IN ('DISPLAY', 'VIDEO')"
       );
     });
 
@@ -157,7 +157,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name FROM campaign WHERE campaign.start_date IS NOT NULL',
+        'SELECT campaign.name FROM campaign WHERE campaign.start_date IS NOT NULL'
       );
     });
   });
@@ -171,7 +171,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name FROM campaign WHERE metrics.clicks BETWEEN 100 AND 1000',
+        'SELECT campaign.name FROM campaign WHERE metrics.clicks BETWEEN 100 AND 1000'
       );
     });
 
@@ -183,7 +183,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE segments.date BETWEEN '2024-01-01' AND '2024-01-31'",
+        "SELECT campaign.name FROM campaign WHERE segments.date BETWEEN '2024-01-01' AND '2024-01-31'"
       );
     });
   });
@@ -197,7 +197,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT ad_group_ad.id FROM ad_group_ad WHERE ad_group_ad.ad.final_urls CONTAINS ALL ('example.com', 'test')",
+        "SELECT ad_group_ad.id FROM ad_group_ad WHERE ad_group_ad.ad.final_urls CONTAINS ALL ('example.com', 'test')"
       );
     });
 
@@ -209,7 +209,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT ad_group_ad.id FROM ad_group_ad WHERE ad_group_ad.ad.final_urls CONTAINS ANY ('example.com', 'sample.com')",
+        "SELECT ad_group_ad.id FROM ad_group_ad WHERE ad_group_ad.ad.final_urls CONTAINS ANY ('example.com', 'sample.com')"
       );
     });
 
@@ -221,7 +221,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT ad_group_ad.id FROM ad_group_ad WHERE ad_group_ad.ad.final_urls CONTAINS NONE ('blocked.com', 'spam.com')",
+        "SELECT ad_group_ad.id FROM ad_group_ad WHERE ad_group_ad.ad.final_urls CONTAINS NONE ('blocked.com', 'spam.com')"
       );
     });
   });
@@ -235,7 +235,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING LAST_30_DAYS',
+        'SELECT campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING LAST_30_DAYS'
       );
     });
 
@@ -260,7 +260,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
           .build();
 
         expect(query).toBe(
-          `SELECT metrics.clicks FROM campaign WHERE segments.date DURING ${range}`,
+          `SELECT metrics.clicks FROM campaign WHERE segments.date DURING ${range}`
         );
       });
     });
@@ -275,7 +275,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '(?i).*promotion.*'",
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '(?i).*promotion.*'"
       );
     });
 
@@ -287,7 +287,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name NOT REGEXP_MATCH '^Test'",
+        "SELECT campaign.name FROM campaign WHERE campaign.name NOT REGEXP_MATCH '^Test'"
       );
     });
   });
@@ -312,7 +312,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
           "AND campaign.advertising_channel_type IN ('SEARCH', 'SHOPPING') " +
           "AND campaign.name LIKE '%Brand%' " +
           'AND campaign.start_date IS NOT NULL ' +
-          'AND segments.date DURING LAST_7_DAYS',
+          'AND segments.date DURING LAST_7_DAYS'
       );
     });
   });
@@ -326,7 +326,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT ad_group_criterion.keyword.text FROM ad_group_criterion WHERE ad_group_criterion.negative = TRUE',
+        'SELECT ad_group_criterion.keyword.text FROM ad_group_criterion WHERE ad_group_criterion.negative = TRUE'
       );
     });
 
@@ -338,7 +338,7 @@ describe('GaqlBuilder - WHERE Clause', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT ad_group_criterion.keyword.text FROM ad_group_criterion WHERE ad_group_criterion.negative = FALSE',
+        'SELECT ad_group_criterion.keyword.text FROM ad_group_criterion WHERE ad_group_criterion.negative = FALSE'
       );
     });
   });

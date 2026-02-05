@@ -7,13 +7,13 @@ describe('GaqlBuilder - Query Size Limits', () => {
     it('should reject queries exceeding maximum SELECT fields', () => {
       const fields = Array.from(
         { length: QUERY_LIMITS.MAX_SELECT_FIELDS + 1 },
-        (_, i) => `field${i}`,
+        (_, i) => `field${i}`
       );
 
       expect(() => {
         new GaqlBuilder().select(fields).from('campaign').build();
       }).toThrow(
-        `SELECT clause exceeds maximum field limit. Expected: <= ${QUERY_LIMITS.MAX_SELECT_FIELDS} fields, Received: ${fields.length} fields`,
+        `SELECT clause exceeds maximum field limit. Expected: <= ${QUERY_LIMITS.MAX_SELECT_FIELDS} fields, Received: ${fields.length} fields`
       );
     });
 
@@ -41,7 +41,7 @@ describe('GaqlBuilder - Query Size Limits', () => {
       expect(() => {
         builder.where('extraField', '=', 'extraValue');
       }).toThrow(
-        `WHERE clause exceeds maximum condition limit. Expected: < ${QUERY_LIMITS.MAX_WHERE_CONDITIONS} conditions, Received: ${QUERY_LIMITS.MAX_WHERE_CONDITIONS} conditions`,
+        `WHERE clause exceeds maximum condition limit. Expected: < ${QUERY_LIMITS.MAX_WHERE_CONDITIONS} conditions, Received: ${QUERY_LIMITS.MAX_WHERE_CONDITIONS} conditions`
       );
     });
 
@@ -83,7 +83,7 @@ describe('GaqlBuilder - Query Size Limits', () => {
       expect(() => {
         new GaqlBuilder().select(['id']).from('campaign').parameters(params).build();
       }).toThrow(
-        `PARAMETERS clause exceeds maximum parameter limit. Expected: <= ${QUERY_LIMITS.MAX_PARAMETERS} parameters, Received: ${QUERY_LIMITS.MAX_PARAMETERS + 1} parameters`,
+        `PARAMETERS clause exceeds maximum parameter limit. Expected: <= ${QUERY_LIMITS.MAX_PARAMETERS} parameters, Received: ${QUERY_LIMITS.MAX_PARAMETERS + 1} parameters`
       );
     });
   });
