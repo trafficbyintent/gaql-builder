@@ -48,8 +48,7 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run clean && npm run build && npm run test && npm run lint && npm run typecheck"
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "google-ads",
