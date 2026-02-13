@@ -1,7 +1,7 @@
 name: Release
 
 on:
-  workflow_dispatch: # Manual trigger only, no inputs needed
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -15,6 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
+          registry-url: 'https://registry.npmjs.org/'
           cache: 'npm'
 
       - name: Install dependencies
@@ -22,16 +23,12 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Build package
-        run: npm run build
-
       - name: Run tests with coverage
         run: npm run test:coverage
 
       - name: Run lint
         run: npm run lint
 
-      # Get version from package.json
       - name: Get package version
         id: package-version
         run: |
@@ -39,23 +36,20 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Publishing version: $VERSION"
 
-      # Publish to npm
       - name: Publish to npm
         run: npm publish --access=public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # Create GitHub Release
       - name: Create GitHub Release
+        if: env.ACT != 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.package-version.outputs.version }}
           name: Release v${{ steps.package-version.outputs.version }}
+          generate_release_notes: true
           body: |
             ## @trafficbyintent/gaql-builder v${{ steps.package-version.outputs.version }}
-
-            ### What's Changed
-            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
 
             ### Installation
             ```bash
@@ -64,3 +58,10 @@ jobs:
 
             ---
             Published to npm: https://www.npmjs.com/package/@trafficbyintent/gaql-builder
+
+      - name: Mock GitHub Release (act)
+        if: env.ACT == 'true'
+        run: |
+          echo "Running in act - mocking GitHub release creation"
+          echo "Would create release: v${{ steps.package-version.outputs.version }}"
+          echo "Release workflow completed successfully in test mode"

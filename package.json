@@ -1,6 +1,6 @@
 {
   "name": "@trafficbyintent/gaql-builder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A TypeScript library for building Google Ads Query Language (GAQL) queries programmatically",
   "sideEffects": false,
   "private": false,

@@ -7,6 +7,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-02-13
+
 ### Changed
 
 - **BREAKING**: Replaced `@trafficbyintent/style-guide` with `@trafficbyintent/linters` for shared
@@ -206,7 +208,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Consumer-focused README with examples
 - MIT License
 
-[Unreleased]: https://github.com/trafficbyintent/gaql-builder/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/trafficbyintent/gaql-builder/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/trafficbyintent/gaql-builder/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/trafficbyintent/gaql-builder/compare/v0.3.0...v1.0.0
 [0.3.0]: https://github.com/trafficbyintent/gaql-builder/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/trafficbyintent/gaql-builder/compare/v0.1.0...v0.2.0
