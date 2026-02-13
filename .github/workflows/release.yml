@@ -18,10 +18,23 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
           cache: 'npm'
 
-      - name: Debug token
+      - name: Debug token and config
         run: |
+          echo "=== Token ==="
           echo "NPM_TOKEN length: ${#NPM_TOKEN}"
           npm whoami 2>&1 || echo "npm whoami failed"
+          echo ""
+          echo "=== npm config list ==="
+          npm config list
+          echo ""
+          echo "=== Project .npmrc ==="
+          cat .npmrc 2>/dev/null || echo "No project .npmrc"
+          echo ""
+          echo "=== User .npmrc (NPM_CONFIG_USERCONFIG) ==="
+          cat "$NPM_CONFIG_USERCONFIG" 2>/dev/null || echo "No user .npmrc"
+          echo ""
+          echo "=== Package access ==="
+          npm access list collaborators @trafficbyintent/gaql-builder 2>&1 || echo "access check failed"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -47,7 +60,7 @@ jobs:
           echo "Publishing version: $VERSION"
 
       - name: Publish to npm
-        run: npm publish --access=public
+        run: npm publish --access=public --loglevel verbose
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
