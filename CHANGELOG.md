@@ -7,6 +7,28 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- **BREAKING**: Replaced `@trafficbyintent/style-guide` with `@trafficbyintent/linters` for shared
+  ESLint, Prettier, and TypeScript configs
+- Removed all GitHub Packages references; npm registry is now the sole package source
+- Updated CI/CD workflows to match current org patterns (kysely-bigquery reference)
+- Updated release workflow: removed stale `GITHUB_TOKEN`, added `generate_release_notes`
+
+### Fixed
+
+- Enforced `MAX_ARRAY_VALUES` (1000) limit on all IN/CONTAINS clause methods
+- Fixed regex nesting depth calculation to skip escaped parentheses
+- Corrected WHERE condition limit error message (off-by-one)
+- Fixed stale `@txi-dev` org references in package.json, README, and CHANGELOG
+- Removed unnecessary `packages:write` permission from release workflow
+- Updated README: corrected error message example and date range documentation
+
+### Removed
+
+- Removed `@trafficbyintent/style-guide` dependency
+- Removed stale `version`, `postversion`, and `version:local` npm scripts
+
 ## [1.0.0] - 2025-01-24
 
 ### Changed

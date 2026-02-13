@@ -199,7 +199,7 @@ try {
         .from('campaign') // Missing SELECT clause
         .build();
 } catch (error) {
-    console.error(error.message); // "SELECT clause is required. Current fields: 0"
+    console.error(error.message); // "SELECT clause is required. Expected: at least one field selected, Received: no fields selected"
 }
 ```
 
@@ -226,8 +226,10 @@ try {
 
 **Date range errors**
 
-- Use only predefined date ranges like `LAST_30_DAYS`, `TODAY`, `YESTERDAY`
-- Custom date ranges require different syntax not yet supported by this library
+- Predefined date ranges like `LAST_30_DAYS`, `TODAY`, `YESTERDAY` are supported
+- Custom dates in `YYYY-MM-DD` format are also supported:
+  `builder.whereDuring('segments.date', '2024-01-15')`
+- Invalid dates (e.g., `2024-02-30`) will be rejected with a validation error
 
 ## Contributing
 
