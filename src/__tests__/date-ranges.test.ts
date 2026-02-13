@@ -46,7 +46,7 @@ describe('GaqlBuilder - Custom Date Range Support', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING '2024-01-15'"
+        "SELECT campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING '2024-01-15'",
       );
     });
 
@@ -58,7 +58,7 @@ describe('GaqlBuilder - Custom Date Range Support', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING LAST_7_DAYS'
+        'SELECT campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING LAST_7_DAYS',
       );
     });
 
@@ -75,7 +75,7 @@ describe('GaqlBuilder - Custom Date Range Support', () => {
         'SELECT campaign.name, metrics.clicks FROM campaign ' +
           "WHERE campaign.status = 'ENABLED' " +
           "AND segments.date DURING '2024-03-15' " +
-          "AND campaign.advertising_channel_type IN ('SEARCH', 'SHOPPING')"
+          "AND campaign.advertising_channel_type IN ('SEARCH', 'SHOPPING')",
       );
     });
 
@@ -109,7 +109,7 @@ describe('GaqlBuilder - Custom Date Range Support', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE segments.date BETWEEN '2024-01-01' AND '2024-01-31'"
+        "SELECT campaign.name FROM campaign WHERE segments.date BETWEEN '2024-01-01' AND '2024-01-31'",
       );
     });
   });

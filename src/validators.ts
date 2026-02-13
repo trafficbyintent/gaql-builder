@@ -15,7 +15,7 @@ import { ValidationError, SecurityError } from './errors';
 export function isValidFieldName(field: string): boolean {
   // Allow aggregate functions
   const aggregatePattern = new RegExp(
-    `^(${AGGREGATE_FUNCTIONS.join('|')})\\([a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*\\)$`
+    `^(${AGGREGATE_FUNCTIONS.join('|')})\\([a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*\\)$`,
   );
   if (aggregatePattern.test(field)) {
     return true;
@@ -95,7 +95,7 @@ export function isValidOperator(operator: string): boolean {
 export function validateFieldName(field: string): void {
   if (!isValidFieldName(field)) {
     throw new ValidationError(
-      `Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "${field}"`
+      `Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "${field}"`,
     );
   }
 }
@@ -108,7 +108,7 @@ export function validateFieldName(field: string): void {
 export function validateResourceName(resource: string): void {
   if (!isValidResourceName(resource)) {
     throw new ValidationError(
-      `Invalid resource name. Expected: alphanumeric with underscores only, Received: "${resource}"`
+      `Invalid resource name. Expected: alphanumeric with underscores only, Received: "${resource}"`,
     );
   }
 }
@@ -121,7 +121,7 @@ export function validateResourceName(resource: string): void {
 export function validateParameterName(paramName: string): void {
   if (!isValidParameterName(paramName)) {
     throw new ValidationError(
-      `Invalid parameter name. Expected: alphanumeric with underscores only, Received: "${paramName}"`
+      `Invalid parameter name. Expected: alphanumeric with underscores only, Received: "${paramName}"`,
     );
   }
 }
@@ -134,7 +134,7 @@ export function validateParameterName(paramName: string): void {
 export function validateDateRange(dateRange: string): void {
   if (!isValidDateRange(dateRange)) {
     throw new ValidationError(
-      `Invalid date range. Expected one of: ${VALID_DATE_RANGES.join(', ')}, or date in YYYY-MM-DD format, Received: "${dateRange}"`
+      `Invalid date range. Expected one of: ${VALID_DATE_RANGES.join(', ')}, or date in YYYY-MM-DD format, Received: "${dateRange}"`,
     );
   }
 }
@@ -147,7 +147,7 @@ export function validateDateRange(dateRange: string): void {
 export function validateOperator(operator: string): void {
   if (!isValidOperator(operator)) {
     throw new ValidationError(
-      `Invalid operator. Expected one of: ${VALID_OPERATORS.join(', ')}, Received: "${operator}"`
+      `Invalid operator. Expected one of: ${VALID_OPERATORS.join(', ')}, Received: "${operator}"`,
     );
   }
 }
@@ -181,10 +181,15 @@ export function isSafeRegexPattern(pattern: string): boolean {
     }
   }
 
-  // Check nesting depth
+  // Check nesting depth (skip escaped parentheses)
   let depth = 0;
   let maxDepth = 0;
-  for (const char of pattern) {
+  for (let i = 0; i < pattern.length; i++) {
+    const char = pattern[i];
+    if (char === '\\') {
+      i++; // Skip the escaped character
+      continue;
+    }
     if (char === '(') {
       depth++;
       maxDepth = Math.max(maxDepth, depth);
@@ -208,7 +213,7 @@ export function isSafeRegexPattern(pattern: string): boolean {
 export function validateRegexPattern(pattern: string): void {
   if (!isSafeRegexPattern(pattern)) {
     throw new SecurityError(
-      'Regex pattern is potentially dangerous (ReDoS risk). Pattern exceeds complexity limits or contains dangerous constructs.'
+      'Regex pattern is potentially dangerous (ReDoS risk). Pattern exceeds complexity limits or contains dangerous constructs.',
     );
   }
 }

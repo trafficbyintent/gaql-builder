@@ -5,20 +5,16 @@ on:
 
 jobs:
   publish:
-    name: Release to npm
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20.x
           registry-url: 'https://registry.npmjs.org/'
           cache: 'npm'
 
@@ -28,20 +24,14 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run tests
-        run: npm test
-
-      - name: Run linting
-        run: npm run lint
-
-      - name: Run type checking
-        run: npm run typecheck
-
-      - name: Check test coverage
-        run: npm run test:coverage
-
       - name: Build package
         run: npm run build
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Run lint
+        run: npm run lint
 
       # Get version from package.json
       - name: Get package version
@@ -49,25 +39,30 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "📦 Publishing version: $VERSION"
+          echo "Publishing version: $VERSION"
 
       # Publish to npm
       - name: Publish to npm
         run: npm publish --access=public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # Create GitHub Release
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.package-version.outputs.version }}
           name: Release v${{ steps.package-version.outputs.version }}
           body: |
             ## @trafficbyintent/gaql-builder v${{ steps.package-version.outputs.version }}
 
-            Published to npm: https://www.npmjs.com/package/@trafficbyintent/gaql-builder
-
+            ### What's Changed
             See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
-          draft: false
-          prerelease: false
+
+            ### Installation
+            ```bash
+            npm install @trafficbyintent/gaql-builder@${{ steps.package-version.outputs.version }}
+            ```
+
+            ---
+            Published to npm: https://www.npmjs.com/package/@trafficbyintent/gaql-builder

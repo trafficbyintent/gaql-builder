@@ -7,7 +7,7 @@ describe('GaqlBuilder - Edge Cases', () => {
       expect(() => {
         new GaqlBuilder().select(['field']).from('resource').whereContainsAll('field', []).build();
       }).toThrow(
-        'CONTAINS ALL clause requires at least one value. Expected: non-empty array, Received: empty array for field'
+        'CONTAINS ALL clause requires at least one value. Expected: non-empty array, Received: empty array for field',
       );
     });
 
@@ -15,7 +15,7 @@ describe('GaqlBuilder - Edge Cases', () => {
       expect(() => {
         new GaqlBuilder().select(['field']).from('resource').whereContainsAny('field', []).build();
       }).toThrow(
-        'CONTAINS ANY clause requires at least one value. Expected: non-empty array, Received: empty array for field'
+        'CONTAINS ANY clause requires at least one value. Expected: non-empty array, Received: empty array for field',
       );
     });
 
@@ -23,7 +23,7 @@ describe('GaqlBuilder - Edge Cases', () => {
       expect(() => {
         new GaqlBuilder().select(['field']).from('resource').whereContainsNone('field', []).build();
       }).toThrow(
-        'CONTAINS NONE clause requires at least one value. Expected: non-empty array, Received: empty array for field'
+        'CONTAINS NONE clause requires at least one value. Expected: non-empty array, Received: empty array for field',
       );
     });
 
@@ -31,7 +31,7 @@ describe('GaqlBuilder - Edge Cases', () => {
       expect(() => {
         new GaqlBuilder().select(['field']).from('resource').whereIn('field', []).build();
       }).toThrow(
-        'IN clause requires at least one value. Expected: non-empty array, Received: empty array for field'
+        'IN clause requires at least one value. Expected: non-empty array, Received: empty array for field',
       );
     });
 
@@ -39,7 +39,7 @@ describe('GaqlBuilder - Edge Cases', () => {
       expect(() => {
         new GaqlBuilder().select(['field']).from('resource').whereNotIn('field', []).build();
       }).toThrow(
-        'NOT IN clause requires at least one value. Expected: non-empty array, Received: empty array for field'
+        'NOT IN clause requires at least one value. Expected: non-empty array, Received: empty array for field',
       );
     });
   });
@@ -64,7 +64,7 @@ describe('GaqlBuilder - Edge Cases', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.budget_id FROM campaign WHERE campaign.budget_id IN (NULL)'
+        'SELECT campaign.budget_id FROM campaign WHERE campaign.budget_id IN (NULL)',
       );
     });
   });
@@ -81,7 +81,7 @@ describe('GaqlBuilder - Edge Cases', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name FROM campaign PARAMETERS omit_unselected_resource_names = true'
+        'SELECT campaign.name FROM campaign PARAMETERS omit_unselected_resource_names = true',
       );
     });
 
@@ -97,7 +97,7 @@ describe('GaqlBuilder - Edge Cases', () => {
         .build();
 
       expect(query).toBe(
-        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, metric_threshold = 100'
+        'SELECT campaign.name FROM campaign PARAMETERS include_drafts = false, metric_threshold = 100',
       );
     });
 
@@ -112,7 +112,7 @@ describe('GaqlBuilder - Edge Cases', () => {
           })
           .build();
       }).toThrow(
-        "Invalid parameter value type for 'test_param'. Expected: boolean or number, Received: string"
+        "Invalid parameter value type for 'test_param'. Expected: boolean or number, Received: string",
       );
     });
 
@@ -126,7 +126,7 @@ describe('GaqlBuilder - Edge Cases', () => {
           })
           .build();
       }).toThrow(
-        "Invalid parameter value for 'test_param'. Expected: finite number, Received: Infinity"
+        "Invalid parameter value for 'test_param'. Expected: finite number, Received: Infinity",
       );
     });
   });

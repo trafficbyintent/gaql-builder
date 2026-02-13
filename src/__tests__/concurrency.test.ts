@@ -23,14 +23,13 @@ describe('GaqlBuilder - Concurrent Usage', () => {
         new GaqlBuilder()
           .select([`field${i}`])
           .from('campaign')
-          .where('id', '=', i)
+          .where('id', '=', i),
       );
     }
 
     const queries = builders.map((b) => b.build());
     queries.forEach((query, i) => {
-      expect(query).toContain(`field${i}`);
-      expect(query).toContain(`id = ${i}`);
+      expect(query).toBe(`SELECT field${i} FROM campaign WHERE id = ${i}`);
     });
   });
 });

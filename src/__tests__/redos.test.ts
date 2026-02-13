@@ -42,6 +42,15 @@ describe('GaqlBuilder - ReDoS Protection', () => {
       expect(isSafeRegexPattern('(([a-z]+)_([0-9]+))')).toBe(true);
       expect(isSafeRegexPattern('((test|prod)_(v1|v2))')).toBe(true);
     });
+
+    it('should not count escaped parentheses as nesting', () => {
+      /* Escaped parens like \( and \) are literal characters, not groups */
+      expect(isSafeRegexPattern('\\(literal\\)')).toBe(true);
+      expect(isSafeRegexPattern('test\\(value\\)end')).toBe(true);
+
+      /* A mix of real and escaped parens should count only real ones */
+      expect(isSafeRegexPattern('(real\\(escaped\\)group)')).toBe(true);
+    });
   });
 
   describe('whereRegexpMatch with ReDoS protection', () => {
@@ -53,7 +62,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '(?i).*brand.*'"
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '(?i).*brand.*'",
       );
     });
 
@@ -98,7 +107,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name NOT REGEXP_MATCH '^test_'"
+        "SELECT campaign.name FROM campaign WHERE campaign.name NOT REGEXP_MATCH '^test_'",
       );
     });
 
@@ -122,7 +131,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH 'test\\.\\*campaign'"
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH 'test\\.\\*campaign'",
       );
     });
 
@@ -134,7 +143,7 @@ describe('GaqlBuilder - ReDoS Protection', () => {
         .build();
 
       expect(query).toBe(
-        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '[a-zA-Z0-9_-]+'"
+        "SELECT campaign.name FROM campaign WHERE campaign.name REGEXP_MATCH '[a-zA-Z0-9_-]+'",
       );
     });
   });

@@ -13,9 +13,13 @@ describe('GaqlBuilder - Performance', () => {
       .build();
 
     /* Verify the query was built successfully with all fields */
-    expect(query).toContain('field0');
-    expect(query).toContain('field499');
-    expect(query.length).toBeGreaterThan(2500); // Rough check for all fields present
+    expect(query).toContain('SELECT field0,');
+    expect(query).toContain('field499 FROM');
+
+    /* Verify all 500 fields are present by checking SELECT clause structure */
+    const selectClause = query.split(' FROM ')[0] as string;
+    const fieldCount = selectClause.split(',').length;
+    expect(fieldCount).toBe(500);
   });
 
   it('should handle maximum parameter sets efficiently', () => {
@@ -37,5 +41,10 @@ describe('GaqlBuilder - Performance', () => {
     expect(query).toContain('PARAMETERS');
     expect(query).toContain('param0 = 0');
     expect(query).toContain('param49 = false');
+
+    /* Verify all 50 parameters are present */
+    const paramsClause = query.split('PARAMETERS ')[1] as string;
+    const paramCount = paramsClause.split(',').length;
+    expect(paramCount).toBe(50);
   });
 });
