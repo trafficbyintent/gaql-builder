@@ -7,6 +7,28 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- **BREAKING**: Replaced `@trafficbyintent/style-guide` with `@trafficbyintent/linters` for shared
+  ESLint, Prettier, and TypeScript configs
+- Removed all GitHub Packages references; npm registry is now the sole package source
+- Updated CI/CD workflows to match current org patterns (kysely-bigquery reference)
+- Updated release workflow: removed stale `GITHUB_TOKEN`, added `generate_release_notes`
+
+### Fixed
+
+- Enforced `MAX_ARRAY_VALUES` (1000) limit on all IN/CONTAINS clause methods
+- Fixed regex nesting depth calculation to skip escaped parentheses
+- Corrected WHERE condition limit error message (off-by-one)
+- Fixed stale `@txi-dev` org references in package.json, README, and CHANGELOG
+- Removed unnecessary `packages:write` permission from release workflow
+- Updated README: corrected error message example and date range documentation
+
+### Removed
+
+- Removed `@trafficbyintent/style-guide` dependency
+- Removed stale `version`, `postversion`, and `version:local` npm scripts
+
 ## [1.0.0] - 2025-01-24
 
 ### Changed
@@ -47,16 +69,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Custom error types for better error handling:
-  - `ValidationError` for input validation failures
-  - `QueryBuildError` for query construction errors
-  - `SecurityError` for security violations
-  - `QueryLimitError` for size limit violations
+    - `ValidationError` for input validation failures
+    - `QueryBuildError` for query construction errors
+    - `SecurityError` for security violations
+    - `QueryLimitError` for size limit violations
 - Query size limits to prevent memory exhaustion attacks:
-  - Maximum 500 SELECT fields
-  - Maximum 100 WHERE conditions
-  - Maximum 50 parameters
-  - Maximum 1000 values in IN/CONTAINS clauses
-  - Maximum 100KB total query size
+    - Maximum 500 SELECT fields
+    - Maximum 100 WHERE conditions
+    - Maximum 50 parameters
+    - Maximum 1000 values in IN/CONTAINS clauses
+    - Maximum 100KB total query size
 - ReDoS (Regular Expression Denial of Service) protection for REGEXP_MATCH patterns
 - Support for custom date ranges in YYYY-MM-DD format in `whereDuring()`
 - Comprehensive GitHub Packages authentication guide (GITHUB_PACKAGES_AUTH.md)
@@ -163,29 +185,29 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial implementation of GaqlBuilder class
 - Support for all GAQL query clauses:
-  - SELECT with field selection
-  - FROM with resource specification
-  - WHERE with multiple condition types
-  - ORDER BY with ASC/DESC direction
-  - LIMIT for result pagination
-  - PARAMETERS for query parameterization
+    - SELECT with field selection
+    - FROM with resource specification
+    - WHERE with multiple condition types
+    - ORDER BY with ASC/DESC direction
+    - LIMIT for result pagination
+    - PARAMETERS for query parameterization
 - Comprehensive WHERE clause operators:
-  - Basic operators (=, !=, >, >=, <, <=)
-  - IN and NOT IN for list matching
-  - LIKE and NOT LIKE for pattern matching
-  - NULL and NOT NULL checks
-  - BETWEEN for range queries
-  - CONTAINS ALL/ANY/NONE for array operations
-  - DURING for date range queries
-  - REGEXP_MATCH for regex patterns
+    - Basic operators (=, !=, >, >=, <, <=)
+    - IN and NOT IN for list matching
+    - LIKE and NOT LIKE for pattern matching
+    - NULL and NOT NULL checks
+    - BETWEEN for range queries
+    - CONTAINS ALL/ANY/NONE for array operations
+    - DURING for date range queries
+    - REGEXP_MATCH for regex patterns
 - Method chaining support for fluent API
 - TypeScript types and full type safety
 - Comprehensive test suite with 100% coverage
 - Consumer-focused README with examples
 - MIT License
 
-[Unreleased]: https://github.com/txi-dev/gaql-builder/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/txi-dev/gaql-builder/compare/v0.3.0...v1.0.0
-[0.3.0]: https://github.com/txi-dev/gaql-builder/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/txi-dev/gaql-builder/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/txi-dev/gaql-builder/releases/tag/v0.1.0
+[Unreleased]: https://github.com/trafficbyintent/gaql-builder/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/trafficbyintent/gaql-builder/compare/v0.3.0...v1.0.0
+[0.3.0]: https://github.com/trafficbyintent/gaql-builder/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/trafficbyintent/gaql-builder/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/trafficbyintent/gaql-builder/releases/tag/v0.1.0

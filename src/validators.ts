@@ -181,10 +181,15 @@ export function isSafeRegexPattern(pattern: string): boolean {
     }
   }
 
-  // Check nesting depth
+  // Check nesting depth (skip escaped parentheses)
   let depth = 0;
   let maxDepth = 0;
-  for (const char of pattern) {
+  for (let i = 0; i < pattern.length; i++) {
+    const char = pattern[i];
+    if (char === '\\') {
+      i++; // Skip the escaped character
+      continue;
+    }
     if (char === '(') {
       depth++;
       maxDepth = Math.max(maxDepth, depth);

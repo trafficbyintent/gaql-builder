@@ -106,7 +106,7 @@ export class GaqlBuilder {
   public where(field: string, operator: string, value: GaqlValue): this {
     if (this.#whereConditions.length >= QUERY_LIMITS.MAX_WHERE_CONDITIONS) {
       throw new QueryLimitError(
-        `WHERE clause exceeds maximum condition limit. Expected: < ${QUERY_LIMITS.MAX_WHERE_CONDITIONS} conditions, Received: ${this.#whereConditions.length} conditions`,
+        `WHERE clause exceeds maximum condition limit. Expected: <= ${QUERY_LIMITS.MAX_WHERE_CONDITIONS} conditions, Received: ${this.#whereConditions.length + 1} conditions`,
       );
     }
 
@@ -151,6 +151,7 @@ export class GaqlBuilder {
       );
     }
 
+    this.validateArrayLength(values, 'IN', field);
     validateFieldName(field);
 
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
@@ -175,6 +176,7 @@ export class GaqlBuilder {
       );
     }
 
+    this.validateArrayLength(values, 'NOT IN', field);
     validateFieldName(field);
 
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
@@ -280,6 +282,7 @@ export class GaqlBuilder {
       );
     }
 
+    this.validateArrayLength(values, 'CONTAINS ALL', field);
     validateFieldName(field);
 
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
@@ -304,6 +307,7 @@ export class GaqlBuilder {
       );
     }
 
+    this.validateArrayLength(values, 'CONTAINS ANY', field);
     validateFieldName(field);
 
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
@@ -328,6 +332,7 @@ export class GaqlBuilder {
       );
     }
 
+    this.validateArrayLength(values, 'CONTAINS NONE', field);
     validateFieldName(field);
 
     const formattedValues = values.map((v) => this.formatValue(v)).join(', ');
@@ -509,6 +514,14 @@ export class GaqlBuilder {
 
     this.#queryParameters = params as Record<string, GaqlValue>;
     return this;
+  }
+
+  private validateArrayLength(values: GaqlArrayValue, clause: string, field: string): void {
+    if (values.length > QUERY_LIMITS.MAX_ARRAY_VALUES) {
+      throw new QueryLimitError(
+        `${clause} clause exceeds maximum array size for field "${field}". Expected: <= ${QUERY_LIMITS.MAX_ARRAY_VALUES} values, Received: ${values.length} values`,
+      );
+    }
   }
 
   private formatCondition(field: string, operator: string, value: GaqlValue): string {

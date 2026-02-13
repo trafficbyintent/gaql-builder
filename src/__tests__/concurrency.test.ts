@@ -29,8 +29,7 @@ describe('GaqlBuilder - Concurrent Usage', () => {
 
     const queries = builders.map((b) => b.build());
     queries.forEach((query, i) => {
-      expect(query).toContain(`field${i}`);
-      expect(query).toContain(`id = ${i}`);
+      expect(query).toBe(`SELECT field${i} FROM campaign WHERE id = ${i}`);
     });
   });
 });

@@ -42,6 +42,15 @@ describe('GaqlBuilder - ReDoS Protection', () => {
       expect(isSafeRegexPattern('(([a-z]+)_([0-9]+))')).toBe(true);
       expect(isSafeRegexPattern('((test|prod)_(v1|v2))')).toBe(true);
     });
+
+    it('should not count escaped parentheses as nesting', () => {
+      /* Escaped parens like \( and \) are literal characters, not groups */
+      expect(isSafeRegexPattern('\\(literal\\)')).toBe(true);
+      expect(isSafeRegexPattern('test\\(value\\)end')).toBe(true);
+
+      /* A mix of real and escaped parens should count only real ones */
+      expect(isSafeRegexPattern('(real\\(escaped\\)group)')).toBe(true);
+    });
   });
 
   describe('whereRegexpMatch with ReDoS protection', () => {

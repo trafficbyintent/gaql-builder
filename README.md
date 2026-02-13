@@ -18,12 +18,12 @@ npm install @trafficbyintent/gaql-builder
 import { GaqlBuilder } from '@trafficbyintent/gaql-builder';
 
 const query = new GaqlBuilder()
-  .select(['campaign.id', 'campaign.name', 'metrics.clicks'])
-  .from('campaign')
-  .where('metrics.impressions', '>', 100)
-  .orderBy('metrics.clicks', 'DESC')
-  .limit(10)
-  .build();
+    .select(['campaign.id', 'campaign.name', 'metrics.clicks'])
+    .from('campaign')
+    .where('metrics.impressions', '>', 100)
+    .orderBy('metrics.clicks', 'DESC')
+    .limit(10)
+    .build();
 
 console.log(query);
 // SELECT campaign.id, campaign.name, metrics.clicks
@@ -107,9 +107,9 @@ const queryString = builder.build();
 ```typescript
 // Parameters only accept boolean and number values for security
 builder.parameters({
-  include_drafts: true,
-  omit_unselected_resource_names: false,
-  metric_threshold: 100, // Numbers are also supported
+    include_drafts: true,
+    omit_unselected_resource_names: false,
+    metric_threshold: 100, // Numbers are also supported
 });
 
 // String values are NOT supported (throws error)
@@ -125,11 +125,11 @@ builder.parameters({
 2. **Parameter Type Restrictions**: Parameters only accept `boolean` and `number` types (no strings)
 3. **Field Name Validation**: Strict validation of field names to prevent malicious input
 4. **Query Size Limits**: Built-in limits to prevent memory exhaustion attacks
-   - Maximum 500 SELECT fields
-   - Maximum 100 WHERE conditions
-   - Maximum 50 parameters
-   - Maximum 1000 values in IN/CONTAINS clauses
-   - Maximum 100KB total query size
+    - Maximum 500 SELECT fields
+    - Maximum 100 WHERE conditions
+    - Maximum 50 parameters
+    - Maximum 1000 values in IN/CONTAINS clauses
+    - Maximum 100KB total query size
 
 ### Input Validation
 
@@ -138,10 +138,10 @@ All inputs are validated to ensure they conform to GAQL syntax requirements:
 ```typescript
 // ✅ Safe - all inputs are validated and escaped
 builder
-  .select(['campaign.name'])
-  .where('campaign.name', '=', "O'Reilly's Campaign") // Automatically escaped
-  .whereIn('status', ['ENABLED', 'PAUSED']) // Each value escaped
-  .build();
+    .select(['campaign.name'])
+    .where('campaign.name', '=', "O'Reilly's Campaign") // Automatically escaped
+    .whereIn('status', ['ENABLED', 'PAUSED']) // Each value escaped
+    .build();
 
 // ❌ These will throw errors (prevented attacks)
 builder.select(['field; DROP TABLE']); // Invalid field name
@@ -155,13 +155,13 @@ builder.parameters({ key: "'; DROP" }); // String parameters not allowed
 
 ```typescript
 const aggregateQuery = new GaqlBuilder()
-  .select(['campaign.id', 'SUM(metrics.clicks)', 'AVG(metrics.ctr)'])
-  .from('campaign')
-  .where('campaign.status', '=', 'ENABLED')
-  .groupBy(['campaign.id'])
-  .orderBy('SUM(metrics.clicks)', 'DESC')
-  .limit(10)
-  .build();
+    .select(['campaign.id', 'SUM(metrics.clicks)', 'AVG(metrics.ctr)'])
+    .from('campaign')
+    .where('campaign.status', '=', 'ENABLED')
+    .groupBy(['campaign.id'])
+    .orderBy('SUM(metrics.clicks)', 'DESC')
+    .limit(10)
+    .build();
 
 // Supports: SUM, COUNT, AVG, MIN, MAX, COUNT_DISTINCT
 ```
@@ -170,23 +170,23 @@ const aggregateQuery = new GaqlBuilder()
 
 ```typescript
 const complexQuery = new GaqlBuilder()
-  .select([
-    'ad_group.id',
-    'ad_group.name',
-    'ad_group_criterion.keyword.text',
-    'metrics.clicks',
-    'metrics.impressions',
-    'metrics.cost_micros',
-  ])
-  .from('keyword_view')
-  .where('campaign.id', '=', 123456789)
-  .where('ad_group.status', '=', 'ENABLED')
-  .where('metrics.impressions', '>', 0)
-  .whereDuring('segments.date', 'LAST_30_DAYS')
-  .orderBy('metrics.clicks', 'DESC')
-  .orderBy('metrics.cost_micros', 'DESC')
-  .limit(50)
-  .build();
+    .select([
+        'ad_group.id',
+        'ad_group.name',
+        'ad_group_criterion.keyword.text',
+        'metrics.clicks',
+        'metrics.impressions',
+        'metrics.cost_micros',
+    ])
+    .from('keyword_view')
+    .where('campaign.id', '=', 123456789)
+    .where('ad_group.status', '=', 'ENABLED')
+    .where('metrics.impressions', '>', 0)
+    .whereDuring('segments.date', 'LAST_30_DAYS')
+    .orderBy('metrics.clicks', 'DESC')
+    .orderBy('metrics.cost_micros', 'DESC')
+    .limit(50)
+    .build();
 ```
 
 ### Query Validation
@@ -195,11 +195,11 @@ The builder validates queries before building:
 
 ```typescript
 try {
-  const query = new GaqlBuilder()
-    .from('campaign') // Missing SELECT clause
-    .build();
+    const query = new GaqlBuilder()
+        .from('campaign') // Missing SELECT clause
+        .build();
 } catch (error) {
-  console.error(error.message); // "SELECT clause is required. Current fields: 0"
+    console.error(error.message); // "SELECT clause is required. Expected: at least one field selected, Received: no fields selected"
 }
 ```
 
@@ -215,7 +215,8 @@ try {
 
 **TypeScript type errors**
 
-- Import types explicitly: `import { GaqlBuilder, type GaqlValue } from '@txi-dev/gaql-builder'`
+- Import types explicitly:
+  `import { GaqlBuilder, type GaqlValue } from '@trafficbyintent/gaql-builder'`
 - Ensure TypeScript is configured with `strict: true` for best type safety
 
 **Invalid field names**
@@ -225,8 +226,10 @@ try {
 
 **Date range errors**
 
-- Use only predefined date ranges like `LAST_30_DAYS`, `TODAY`, `YESTERDAY`
-- Custom date ranges require different syntax not yet supported by this library
+- Predefined date ranges like `LAST_30_DAYS`, `TODAY`, `YESTERDAY` are supported
+- Custom dates in `YYYY-MM-DD` format are also supported:
+  `builder.whereDuring('segments.date', '2024-01-15')`
+- Invalid dates (e.g., `2024-02-30`) will be rejected with a validation error
 
 ## Contributing
 

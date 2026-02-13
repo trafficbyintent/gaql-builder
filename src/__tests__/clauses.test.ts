@@ -34,6 +34,18 @@ describe('GaqlBuilder - Additional Clauses', () => {
         'GROUP BY clause requires at least one field. Expected: non-empty array, Received: empty array',
       );
     });
+
+    it('should reject invalid field names in GROUP BY', () => {
+      expect(() => {
+        new GaqlBuilder()
+          .select(['campaign.id'])
+          .from('campaign')
+          .groupBy(['campaign.id', 'field"; DROP TABLE'])
+          .build();
+      }).toThrow(
+        'Invalid field name. Expected: alphanumeric with dots/underscores or aggregate function, Received: "field"; DROP TABLE"',
+      );
+    });
   });
 
   describe('ORDER BY clause', () => {
